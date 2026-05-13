@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f7f4ea;
+  color: #1f2933;
+  font-family: var(--font-manrope), Inter, system-ui, sans-serif;
+}
+
+::selection {
+  background: #b7e75a;
+  color: #123d2a;
+}
+
+.glass {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 16px 40px rgba(18, 61, 42, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.grass-divider {
+  height: 38px;
+  background:
+    radial-gradient(18px 24px at 12px 38px, transparent 18px, #f7f4ea 19px),
+    linear-gradient(90deg, #5dbb63, #b7e75a, #5dbb63);
+  background-size: 44px 38px, 100% 100%;
+  animation: wave 9s linear infinite;
+}
+
+@keyframes wave {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 88px 0, 0 0; }
+}
+
+.range {
+  accent-color: #5dbb63;
+}
+
+.season-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: .28;
+  animation: float 11s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(18px, -22px, 0) scale(1.04); }
+}
