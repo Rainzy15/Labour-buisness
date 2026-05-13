@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { CalendarDays, FileText, Leaf, Wrench } from "lucide-react";
 import { StatCard } from "@/components/portal/PortalShell";
+import { requireProfile } from "@/lib/auth/server";
+import { getCustomerDashboardData } from "@/lib/dashboardData";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const profile = await requireProfile(["customer", "admin", "manager"]);
+  const { bookings, addresses } = await getCustomerDashboardData(profile);
+  const upcoming = bookings.filter((booking) => !["completed", "cancelled", "rejected"].includes(booking.status));
+  const completed = bookings.filter((booking) => booking.status === "completed");
+
   return (
     <div className="grid gap-6">
       <div className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Upcoming appointments" value="2" detail="Next visit: Friday 09:00" />
-        <StatCard label="Active contracts" value="1" detail="Summer Lawn Care Bundle" />
-        <StatCard label="Latest invoice" value="€149" detail="Paid on May 1" />
-        <StatCard label="Recommended" value="Spring reset" detail="Best seasonal next step" />
+        <StatCard label="Upcoming appointments" value={String(upcoming.length)} detail={upcoming[0]?.requested_date ? `Next request: ${upcoming[0].requested_date}` : "No upcoming request yet"} />
+        <StatCard label="Saved addresses" value={String(addresses.length)} detail={addresses[0]?.commune ?? "Add your first address"} />
+        <StatCard label="Completed services" value={String(completed.length)} detail="Service history builds here" />
+        <StatCard label="Recommended" value="Seasonal care" detail="Use pricing to find best bundle" />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {[

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, UserCircle } from "lucide-react";
+import { LayoutDashboard, LogOut, ShieldCheck, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
 
@@ -27,6 +27,12 @@ export function UserMenu() {
     <div className="flex items-center gap-2">
       <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-forest">
         <UserCircle className="h-4 w-4" /> Account
+      </Link>
+      <Link href="/admin" className="hidden items-center gap-2 rounded-full bg-lime px-3 py-2 text-sm font-black text-forest xl:inline-flex">
+        <ShieldCheck className="h-4 w-4" /> Admin
+      </Link>
+      <Link href="/dashboard/book" className="hidden items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-forest xl:inline-flex">
+        <LayoutDashboard className="h-4 w-4" /> Book
       </Link>
       <button onClick={logout} className="grid h-10 w-10 place-items-center rounded-full bg-forest text-white" aria-label="Logout">
         <LogOut className="h-4 w-4" />
