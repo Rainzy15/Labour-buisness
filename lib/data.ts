@@ -224,8 +224,8 @@ export const imageAlt = {
 };
 
 export const quickStats = [
-  ["Typical lawn visit", "from €50"],
-  ["Robot mower rental", "from €69/month"],
+  ["Typical lawn visit", "from €55"],
+  ["Robot mower rental", "from €79/month"],
   ["Winter salting", "from €35/visit"]
 ];
 

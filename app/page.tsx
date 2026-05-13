@@ -74,7 +74,23 @@ function QuickEstimate() {
   const [size, setSize] = useState(250);
   const [season, setSeason] = useState("Summer");
   const [service, setService] = useState("Lawn care");
-  const estimate = useMemo(() => calculateLawn({ size, frequency: "oneTime", grass: season === "Spring" ? "long" : "normal", edge: service.includes("Lawn"), collection: false, waste: false, terrain: "easy", access: "easy" }), [size, season, service]);
+  const estimate = useMemo(
+    () =>
+      calculateLawn({
+        size,
+        season: season === "Spring" ? "spring" : season === "Autumn" ? "autumn" : "summer",
+        frequency: "oneTime",
+        grass: season === "Spring" ? "long" : "normal",
+        edge: service.includes("Lawn"),
+        collection: false,
+        waste: false,
+        terrain: "easy",
+        access: "easy",
+        travel: "near",
+        care: service.includes("Lawn") ? "standard" : "basic"
+      }),
+    [size, season, service]
+  );
   return (
     <Section className="bg-cream">
       <Container>

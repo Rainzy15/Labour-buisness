@@ -2,39 +2,49 @@ export const PRICING = {
   lawn: {
     basePerSqm: 0.25,
     springFirstCutPerSqm: 0.3,
-    minimum: 50,
-    edgeTrim: 15,
-    grassCollectionPerSqm: 0.05,
-    greenWasteRemoval: 20,
+    premiumCarePerSqm: 0.35,
+    minimumVisit: 55,
+    smallGardenMinimum: 50,
+    edgeTrimming: 15,
+    grassCollectionPerSqm: 0.06,
+    greenWasteRemovalSmall: 20,
+    greenWasteRemovalLarge: 35,
     longGrassMultiplier: 1.15,
-    overgrownMultiplier: 1.35,
+    overgrownMultiplier: 1.4,
+    wetGrassMultiplier: 1.1,
     mediumTerrainMultiplier: 1.1,
-    difficultTerrainMultiplier: 1.2,
-    narrowAccessSurcharge: 10,
-    complexAccessSurcharge: 20,
+    difficultTerrainMultiplier: 1.25,
+    narrowAccessSurcharge: 12,
+    complexAccessSurcharge: 25,
+    travelBaseIncludedKm: 10,
+    travelSurcharge: 10,
     discounts: { weekly: 0.15, biweekly: 0.1, monthly: 0.05 }
   },
   hedge: {
     basePerLinearMeter: 10,
-    minimum: 60,
-    wasteRemoval: 25,
-    heightMultipliers: { low: 0.85, medium: 1.0, high: 1.35 },
+    minimumJob: 65,
+    wasteRemoval: 30,
+    accessSurcharge: 15,
+    heightMultipliers: { under150cm: 0.85, from150to250cm: 1.0, over250cm: 1.4 },
     densityMultipliers: { light: 0.9, normal: 1.0, dense: 1.25 },
-    shapingMultipliers: { basic: 1.0, clean: 1.1, premium: 1.2 }
+    shapingMultipliers: { basic: 1.0, clean: 1.1, premium: 1.25 }
   },
   leaves: {
-    basePerSqm: 0.2,
-    minimum: 45,
+    basePerSqm: 0.22,
+    minimumVisit: 50,
     mediumDensityMultiplier: 1.15,
-    heavyDensityMultiplier: 1.4,
-    baggingFee: 10,
-    takeAwayFee: 35,
+    heavyDensityMultiplier: 1.45,
+    baggingFee: 12,
+    takeAwayFeeSmall: 35,
+    takeAwayFeeLarge: 55,
     planDiscounts: { threeVisits: 0.08, fiveVisits: 0.12 }
   },
   pressureWashing: {
     basePerSqm: 12,
-    minimum: 80,
+    minimumJob: 85,
     protectiveTreatmentPerSqm: 3,
+    noWaterWarningFee: 0,
+    limitedDrainageMultiplier: 1.1,
     multipliers: {
       terrace: 1.0,
       driveway: 1.05,
@@ -46,122 +56,171 @@ export const PRICING = {
     }
   },
   winter: {
-    snowPerSqm: 0.35,
-    saltingPerSqm: 0.12,
-    snowMinimum: 45,
-    saltingMinimum: 35,
-    combinedMinimum: 60,
+    snowPerSqm: 0.38,
+    saltingPerSqm: 0.14,
+    snowMinimum: 50,
+    saltingMinimum: 38,
+    combinedMinimum: 65,
     sameDayMultiplier: 1.2,
-    emergencyMultiplier: 1.35,
+    emergencyMorningMultiplier: 1.4,
     smallBusinessMultiplier: 1.2,
-    standbyFromMonthly: 129
+    standbyMonthlyFrom: 139
   },
   hourly: {
-    hourlyRatePerWorker: 45,
+    hourlyRatePerWorker: 55,
     minimumHours: 2,
-    wasteRemoval: 25,
-    plantingHandlingFee: 15
+    secondWorkerMultiplier: 2,
+    wasteRemoval: 30,
+    plantingHandlingFee: 20
   },
   robotRental: {
-    smallMonthly: 69,
-    mediumMonthly: 89,
-    largeMonthly: 119,
+    smallMonthly: 79,
+    mediumMonthly: 99,
+    largeMonthly: 129,
     assistedSetup: 99,
     fullSetup: 249,
+    delivery0to10km: 0,
     delivery10to25km: 25,
     delivery25kmPlus: 45,
     monthlyMaintenance: 29,
     midSeasonCheck: 59,
-    refundableDeposit: 200,
     winterStorage: 49,
+    refundableDeposit: 200,
     durationDiscounts: { oneMonth: 0, threeMonths: 0.05, sixMonths: 0.12, eightMonths: 0.15 }
   }
 } as const;
 
-export type BreakdownLine = { label: string; amount: number };
+export type BreakdownKind = "base" | "addon" | "difficulty" | "discount" | "minimum";
+export type BreakdownLine = { label: string; amount: number; kind?: BreakdownKind };
+export type EstimateCadence = "one-time" | "per-visit" | "monthly" | "season";
 export type Estimate = {
+  id: string;
   name: string;
+  category: "lawn" | "hedge" | "leaves" | "pressure" | "winter" | "hourly" | "robot";
   total: number;
+  cadence: EstimateCadence;
+  perVisit?: number;
   monthly?: number;
   deposit?: number;
   savings?: number;
+  visitsPerMonth?: number;
+  confidence: "High" | "Medium" | "Needs confirmation";
+  included: string[];
+  mayChange: string[];
+  recommendation: string;
   breakdown: BreakdownLine[];
+  warnings?: string[];
   note?: string;
 };
 
 export const eur = (value: number) =>
-  new Intl.NumberFormat("en-LU", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(
-    Math.max(0, Math.round(value))
-  );
+  new Intl.NumberFormat("en-LU", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.max(0, Math.round(value)));
 
 const minimum = (value: number, min: number) => Math.max(value, min);
+const sum = (lines: BreakdownLine[]) => lines.reduce((total, line) => total + line.amount, 0);
 
-// Lawn formula: start with m² rate, apply grass and terrain multipliers, add flat/per-m² add-ons,
-// then apply frequency discounts while preserving the minimum visit price.
+function minimumLine(current: number, min: number): BreakdownLine {
+  return { label: "Minimum job adjustment", amount: Math.max(0, min - current), kind: "minimum" };
+}
+
+function visitsForFrequency(frequency: "oneTime" | "weekly" | "biweekly" | "monthly") {
+  if (frequency === "weekly") return 4;
+  if (frequency === "biweekly") return 2;
+  if (frequency === "monthly") return 1;
+  return undefined;
+}
+
 export function calculateLawn(input: {
   size: number;
+  season?: "spring" | "summer" | "autumn";
   frequency: "oneTime" | "weekly" | "biweekly" | "monthly";
-  grass: "normal" | "long" | "overgrown";
+  grass: "normal" | "long" | "overgrown" | "wet";
   edge: boolean;
   collection: boolean;
   waste: boolean;
   terrain: "easy" | "medium" | "difficult";
   access: "easy" | "narrow" | "complex";
+  travel: "near" | "mid" | "far";
+  care: "basic" | "standard" | "premium";
 }) {
   const p = PRICING.lawn;
-  let base = input.size * p.basePerSqm;
-  const lines: BreakdownLine[] = [{ label: "Base mowing", amount: base }];
+  const rate = input.care === "premium" ? p.premiumCarePerSqm : input.season === "spring" ? p.springFirstCutPerSqm : p.basePerSqm;
+  const base = input.size * rate;
+  const lines: BreakdownLine[] = [{ label: `${input.size} m² lawn care`, amount: base, kind: "base" }];
 
-  if (input.grass === "long") base *= p.longGrassMultiplier;
-  if (input.grass === "overgrown") base *= p.overgrownMultiplier;
-  if (input.terrain === "medium") base *= p.mediumTerrainMultiplier;
-  if (input.terrain === "difficult") base *= p.difficultTerrainMultiplier;
+  const grassMultiplier = input.grass === "long" ? p.longGrassMultiplier : input.grass === "overgrown" ? p.overgrownMultiplier : input.grass === "wet" ? p.wetGrassMultiplier : 1;
+  const terrainMultiplier = input.terrain === "medium" ? p.mediumTerrainMultiplier : input.terrain === "difficult" ? p.difficultTerrainMultiplier : 1;
+  const difficultyBase = base * grassMultiplier * terrainMultiplier;
+  lines.push({ label: "Grass and terrain adjustment", amount: difficultyBase - base, kind: "difficulty" });
 
-  let addOns = 0;
-  if (input.edge) addOns += p.edgeTrim;
-  if (input.collection) addOns += input.size * p.grassCollectionPerSqm;
-  if (input.waste) addOns += p.greenWasteRemoval;
-  if (input.access === "narrow") addOns += p.narrowAccessSurcharge;
-  if (input.access === "complex") addOns += p.complexAccessSurcharge;
+  const edge = input.edge || input.care === "standard" || input.care === "premium" ? p.edgeTrimming : 0;
+  const collection = input.collection || input.care === "premium" ? input.size * p.grassCollectionPerSqm : 0;
+  const waste = input.waste ? (input.size > 500 ? p.greenWasteRemovalLarge : p.greenWasteRemovalSmall) : 0;
+  const access = input.access === "narrow" ? p.narrowAccessSurcharge : input.access === "complex" ? p.complexAccessSurcharge : 0;
+  const travel = input.travel === "mid" ? p.travelSurcharge : input.travel === "far" ? p.travelSurcharge * 2 : 0;
+  lines.push({ label: "Add-ons and access", amount: edge + collection + waste + access + travel, kind: "addon" });
 
-  const beforeDiscount = minimum(base + addOns, p.minimum);
-  const discount =
-    input.frequency === "weekly" ? p.discounts.weekly : input.frequency === "biweekly" ? p.discounts.biweekly : input.frequency === "monthly" ? p.discounts.monthly : 0;
-  const total = minimum(beforeDiscount * (1 - discount), p.minimum);
-  const visits = input.frequency === "weekly" ? 4.33 : input.frequency === "biweekly" ? 2.16 : input.frequency === "monthly" ? 1 : 1;
+  const beforeMinimum = sum(lines);
+  lines.push(minimumLine(beforeMinimum, input.size < 100 ? p.smallGardenMinimum : p.minimumVisit));
+  const beforeDiscount = sum(lines);
+  const discountRate = input.frequency === "weekly" ? p.discounts.weekly : input.frequency === "biweekly" ? p.discounts.biweekly : input.frequency === "monthly" ? p.discounts.monthly : 0;
+  lines.push({ label: "Regular visit discount", amount: -beforeDiscount * discountRate, kind: "discount" });
 
-  lines.push({ label: "Difficulty and access adjustments", amount: base - input.size * p.basePerSqm });
-  lines.push({ label: "Add-ons", amount: addOns });
-  lines.push({ label: "Regular visit discount", amount: -beforeDiscount * discount });
-  return { name: "Lawn care", total, monthly: total * visits, savings: beforeDiscount - total, breakdown: lines };
+  const perVisit = sum(lines);
+  const visits = visitsForFrequency(input.frequency);
+  return {
+    id: "lawn",
+    name: "Lawn care",
+    category: "lawn",
+    total: perVisit,
+    cadence: input.frequency === "oneTime" ? "per-visit" : "per-visit",
+    perVisit,
+    monthly: visits ? perVisit * visits : undefined,
+    visitsPerMonth: visits,
+    savings: beforeDiscount * discountRate,
+    confidence: input.access === "complex" || input.grass === "overgrown" ? "Medium" : "High",
+    included: input.care === "premium" ? ["Mowing", "Edge trimming", "Grass collection", "Visual clean-up"] : input.care === "standard" ? ["Mowing", "Edge trimming"] : ["Mowing"],
+    mayChange: ["Very steep terrain", "Hidden obstacles", "Waste volume", "Exact parking/access"],
+    recommendation: input.frequency === "oneTime" ? "Biweekly visits usually keep Luxembourg lawns neat with 10% savings." : "Recurring lawn care is the best value for steady summer growth.",
+    breakdown: lines,
+    warnings: input.grass === "overgrown" ? ["Overgrown lawns may need a staged first cut."] : undefined
+  } satisfies Estimate;
 }
 
-// Hedge formula: linear metres are multiplied by height, density, and shaping precision.
-// Waste removal is a flat add-on and every hedge job respects the minimum job price.
 export function calculateHedge(input: {
   length: number;
-  height: "low" | "medium" | "high";
+  height: "under150cm" | "from150to250cm" | "over250cm";
   density: "light" | "normal" | "dense";
   shaping: "basic" | "clean" | "premium";
   waste: boolean;
+  access: "easy" | "complex";
 }) {
   const p = PRICING.hedge;
   const base = input.length * p.basePerLinearMeter;
-  let adjusted = base * p.heightMultipliers[input.height] * p.densityMultipliers[input.density] * p.shapingMultipliers[input.shaping];
-  const waste = input.waste ? p.wasteRemoval : 0;
-  const total = minimum(adjusted + waste, p.minimum);
+  const adjusted = base * p.heightMultipliers[input.height] * p.densityMultipliers[input.density] * p.shapingMultipliers[input.shaping];
+  const lines: BreakdownLine[] = [
+    { label: `${input.length} linear metres`, amount: base, kind: "base" },
+    { label: "Height, density, shaping", amount: adjusted - base, kind: "difficulty" },
+    { label: "Waste and access", amount: (input.waste ? p.wasteRemoval : 0) + (input.access === "complex" ? p.accessSurcharge : 0), kind: "addon" }
+  ];
+  lines.push(minimumLine(sum(lines), p.minimumJob));
+  const total = sum(lines);
   return {
+    id: "hedge",
     name: "Hedge care",
+    category: "hedge",
     total,
-    breakdown: [
-      { label: "Linear metres", amount: base },
-      { label: "Height, density, shaping", amount: adjusted - base },
-      { label: "Waste removal", amount: waste }
-    ]
-  };
+    cadence: "one-time",
+    confidence: input.height === "over250cm" ? "Needs confirmation" : "Medium",
+    included: ["Hedge trimming", "Shape correction", "Clean working area"],
+    mayChange: ["Height over 2.5m", "Dense old growth", "Ladder/safety access", "Waste volume"],
+    recommendation: "Pair hedge care with lawn service for a Summer Garden Bundle suggestion.",
+    breakdown: lines,
+    warnings: input.height === "over250cm" ? ["Hedges over 2.5m may require special equipment or quote confirmation."] : undefined,
+    note: `Estimated working time: ${Math.max(1, Math.ceil(input.length / 12))}-${Math.max(2, Math.ceil(input.length / 8))} hours.`
+  } satisfies Estimate;
 }
 
-// Leaf formula: area price is adjusted by density, removal option, visit count, and autumn plan discount.
 export function calculateLeaves(input: {
   area: number;
   density: "light" | "medium" | "heavy";
@@ -169,107 +228,150 @@ export function calculateLeaves(input: {
   frequency: "oneTime" | "threeVisits" | "fiveVisits";
 }) {
   const p = PRICING.leaves;
-  let base = input.area * p.basePerSqm;
-  if (input.density === "medium") base *= p.mediumDensityMultiplier;
-  if (input.density === "heavy") base *= p.heavyDensityMultiplier;
-  const removal = input.removal === "takeAway" ? p.takeAwayFee : input.removal === "bags" ? p.baggingFee : 0;
+  const densityMultiplier = input.density === "medium" ? p.mediumDensityMultiplier : input.density === "heavy" ? p.heavyDensityMultiplier : 1;
+  const base = input.area * p.basePerSqm * densityMultiplier;
+  const removal = input.removal === "takeAway" ? (input.area > 600 ? p.takeAwayFeeLarge : p.takeAwayFeeSmall) : input.removal === "bags" ? p.baggingFee : 0;
   const visits = input.frequency === "threeVisits" ? 3 : input.frequency === "fiveVisits" ? 5 : 1;
-  const discount = input.frequency === "threeVisits" ? p.planDiscounts.threeVisits : input.frequency === "fiveVisits" ? p.planDiscounts.fiveVisits : 0;
-  const before = minimum(base + removal, p.minimum) * visits;
-  const total = before * (1 - discount);
+  const discountRate = input.frequency === "threeVisits" ? p.planDiscounts.threeVisits : input.frequency === "fiveVisits" ? p.planDiscounts.fiveVisits : 0;
+  const perVisit = minimum(base + removal, p.minimumVisit);
+  const beforeDiscount = perVisit * visits;
+  const discount = beforeDiscount * discountRate;
   return {
+    id: "leaves",
     name: "Leaf clearing",
-    total,
-    savings: before - total,
+    category: "leaves",
+    total: beforeDiscount - discount,
+    cadence: input.frequency === "oneTime" ? "one-time" : "season",
+    perVisit,
+    savings: discount,
+    confidence: input.density === "heavy" ? "Medium" : "High",
+    included: ["Leaf blowing/raking", "Collection into agreed area", input.removal === "takeAway" ? "Green waste take-away" : input.removal === "bags" ? "Bagging" : "Compost pile on property"],
+    mayChange: ["Wet compacted leaves", "Large tree volume", "Difficult disposal access"],
+    recommendation: input.frequency === "oneTime" ? "A 3-visit autumn plan avoids heavy build-up and saves 8%." : "Autumn plans keep paths and lawns safer through peak leaf fall.",
     breakdown: [
-      { label: "Leaf clearing", amount: base * visits },
-      { label: "Removal option", amount: removal * visits },
-      { label: "Autumn plan discount", amount: -before * discount }
+      { label: `${input.area} m² leaf clearing`, amount: base * visits, kind: "base" },
+      { label: "Waste handling", amount: removal * visits, kind: "addon" },
+      { label: "Autumn plan discount", amount: -discount, kind: "discount" }
     ]
-  };
+  } satisfies Estimate;
 }
 
-// Pressure washing formula: surface area uses the base m² rate, then surface and dirt multipliers apply.
-// Protective treatment is a separate per-m² add-on.
 export function calculatePressure(input: {
   area: number;
   surface: "terrace" | "driveway" | "stonePath" | "facadeLower";
   dirt: "lightDirt" | "normalDirt" | "heavyMoss";
   treatment: boolean;
+  water: "available" | "notAvailable";
+  drainage: "easy" | "limited";
 }) {
   const p = PRICING.pressureWashing;
   const base = input.area * p.basePerSqm;
-  const adjusted = base * p.multipliers[input.surface] * p.multipliers[input.dirt];
+  let adjusted = base * p.multipliers[input.surface] * p.multipliers[input.dirt];
+  if (input.drainage === "limited") adjusted *= p.limitedDrainageMultiplier;
   const treatment = input.treatment ? input.area * p.protectiveTreatmentPerSqm : 0;
+  const lines: BreakdownLine[] = [
+    { label: `${input.area} m² surface cleaning`, amount: base, kind: "base" },
+    { label: "Surface, dirt, drainage adjustment", amount: adjusted - base, kind: "difficulty" },
+    { label: "Protective treatment", amount: treatment, kind: "addon" }
+  ];
+  lines.push(minimumLine(sum(lines), p.minimumJob));
   return {
+    id: "pressure",
     name: "Pressure washing",
-    total: minimum(adjusted + treatment, p.minimum),
-    breakdown: [
-      { label: "Surface cleaning", amount: base },
-      { label: "Surface and dirt adjustment", amount: adjusted - base },
-      { label: "Protective treatment", amount: treatment }
-    ]
-  };
+    category: "pressure",
+    total: sum(lines),
+    cadence: "one-time",
+    confidence: input.water === "notAvailable" ? "Needs confirmation" : "High",
+    included: ["Surface wash", "Edge rinse", "Basic site clean-up"],
+    mayChange: ["No water access", "Poor drainage", "Heavy moss/algae", "Fragile stone"],
+    recommendation: "Pressure washing pairs well with Spring Reset or Autumn Clean-Up bundles.",
+    warnings: input.water === "notAvailable" ? ["Requires confirmation before booking because water access is not available."] : undefined,
+    breakdown: lines
+  } satisfies Estimate;
 }
 
-// Winter formula: snow and salting use separate m² rates and minimums.
-// Timing and small-business multipliers account for urgency and site expectations.
 export function calculateWinter(input: {
   area: number;
   service: "snow" | "salting" | "combined";
   timing: "planned" | "sameDay" | "emergency";
-  surface: "pathway" | "driveway" | "residence" | "business";
+  property: "pathway" | "driveway" | "residence" | "business";
   contract: "oneTime" | "standby";
 }) {
   const p = PRICING.winter;
   if (input.contract === "standby") {
     return {
-      name: "Winter standby",
-      total: p.standbyFromMonthly,
-      monthly: p.standbyFromMonthly,
-      note: "Includes 2 planned visits/month. Extra visits calculated separately.",
-      breakdown: [{ label: "Standby contract from", amount: p.standbyFromMonthly }]
-    };
+      id: "winter",
+      name: "Winter safety standby",
+      category: "winter",
+      total: p.standbyMonthlyFrom,
+      monthly: p.standbyMonthlyFrom,
+      cadence: "monthly",
+      confidence: "Medium",
+      included: ["Priority winter planning", "2 planned checks/month", "Snow and salting readiness"],
+      mayChange: ["Snowfall frequency", "Emergency timing", "Salt volume", "Commercial access requirements"],
+      recommendation: "Winter standby is best for residences, landlords, and small offices needing reliable access.",
+      breakdown: [{ label: "Standby contract from", amount: p.standbyMonthlyFrom, kind: "base" }],
+      note: "Extra visits are calculated separately. Winter services are weather-dependent."
+    } satisfies Estimate;
   }
-  let raw = input.service === "snow" ? input.area * p.snowPerSqm : input.service === "salting" ? input.area * p.saltingPerSqm : input.area * (p.snowPerSqm + p.saltingPerSqm);
+
+  const rate = input.service === "snow" ? p.snowPerSqm : input.service === "salting" ? p.saltingPerSqm : p.snowPerSqm + p.saltingPerSqm;
   const min = input.service === "snow" ? p.snowMinimum : input.service === "salting" ? p.saltingMinimum : p.combinedMinimum;
-  raw = minimum(raw, min);
-  if (input.timing === "sameDay") raw *= p.sameDayMultiplier;
-  if (input.timing === "emergency") raw *= p.emergencyMultiplier;
-  if (input.surface === "business") raw *= p.smallBusinessMultiplier;
+  let adjusted = minimum(input.area * rate, min);
+  const beforeTiming = adjusted;
+  if (input.timing === "sameDay") adjusted *= p.sameDayMultiplier;
+  if (input.timing === "emergency") adjusted *= p.emergencyMorningMultiplier;
+  if (input.property === "business") adjusted *= p.smallBusinessMultiplier;
+
   return {
-    name: "Winter snow and salting",
-    total: raw,
-    note: "Winter services are weather-dependent.",
+    id: "winter",
+    name: "Snow clearing and salting",
+    category: "winter",
+    total: adjusted,
+    perVisit: adjusted,
+    cadence: "per-visit",
+    confidence: "Medium",
+    included: [input.service === "combined" ? "Snow clearing and salting" : input.service === "snow" ? "Snow clearing" : "Salting", "Access path focus", "Weather-dependent visit"],
+    mayChange: ["Fresh snowfall amount", "Ice thickness", "Emergency timing", "Salt required"],
+    recommendation: input.service === "combined" ? "Snow clearing plus salting qualifies for the Winter Safety Bundle suggestion." : "Combined snow clearing and salting is safer for repeated winter access.",
     breakdown: [
-      { label: "Snow/salting service", amount: minimum(input.area * (input.service === "combined" ? p.snowPerSqm + p.saltingPerSqm : input.service === "snow" ? p.snowPerSqm : p.saltingPerSqm), min) },
-      { label: "Timing and site adjustment", amount: raw - min }
-    ]
-  };
+      { label: `${input.area} m² winter service`, amount: beforeTiming, kind: "base" },
+      { label: "Urgency and property adjustment", amount: adjusted - beforeTiming, kind: "difficulty" }
+    ],
+    note: "Winter services are weather-dependent."
+  } satisfies Estimate;
 }
 
-// Hourly formula: bookings are charged by worker-hour with a two-hour minimum,
-// plus optional waste removal and a placeholder planting handling fee.
-export function calculateHourly(input: { hours: number; workers: 1 | 2; service: "weeding" | "planting" | "tidy" | "help" | "mixed"; waste: boolean }) {
+export function calculateHourly(input: {
+  hours: number;
+  workers: 1 | 2;
+  service: "weeding" | "planting" | "tidy" | "help" | "mixed";
+  waste: boolean;
+  materials: boolean;
+}) {
   const p = PRICING.hourly;
   const hours = Math.max(input.hours, p.minimumHours);
   const base = hours * input.workers * p.hourlyRatePerWorker;
-  const planting = input.service === "planting" ? p.plantingHandlingFee : 0;
   const waste = input.waste ? p.wasteRemoval : 0;
+  const materials = input.materials || input.service === "planting" ? p.plantingHandlingFee : 0;
   return {
-    name: "General hourly garden help",
-    total: base + planting + waste,
+    id: "hourly",
+    name: "Hourly garden work",
+    category: "hourly",
+    total: base + waste + materials,
+    cadence: "one-time",
+    confidence: "Medium",
+    included: [`${hours} labour hours minimum`, `${input.workers} worker${input.workers > 1 ? "s" : ""}`, "General garden support"],
+    mayChange: ["Materials cost", "Green waste volume", "Scope discovered on site"],
+    recommendation: "Hourly work is best for mixed garden tidy-up, planting help, and small outdoor tasks.",
     breakdown: [
-      { label: "Labour", amount: base },
-      { label: "Materials handling", amount: planting },
-      { label: "Waste removal", amount: waste }
+      { label: "Labour", amount: base, kind: "base" },
+      { label: "Waste removal", amount: waste, kind: "addon" },
+      { label: "Materials handling", amount: materials, kind: "addon" }
     ]
-  };
+  } satisfies Estimate;
 }
 
-// Robot rental formula: choose monthly tier by lawn size, multiply by duration,
-// apply duration discount, then add setup, delivery, maintenance, and storage.
-// The refundable deposit is shown separately so it does not inflate service revenue.
 export function calculateRobot(input: {
   size: number;
   duration: "oneMonth" | "threeMonths" | "sixMonths" | "eightMonths";
@@ -281,27 +383,39 @@ export function calculateRobot(input: {
 }) {
   const p = PRICING.robotRental;
   const months = input.duration === "oneMonth" ? 1 : input.duration === "threeMonths" ? 3 : input.duration === "sixMonths" ? 6 : 8;
+  const custom = input.size > 1000;
   const monthly = input.size <= 300 ? p.smallMonthly : input.size <= 600 ? p.mediumMonthly : p.largeMonthly;
-  const discount = p.durationDiscounts[input.duration];
-  const rental = monthly * months * (1 - discount);
+  const plan = input.size <= 300 ? "Small Plan" : input.size <= 600 ? "Medium Plan" : input.size <= 1000 ? "Large Plan" : "Custom quote";
+  const grossRental = monthly * months;
+  const discount = grossRental * p.durationDiscounts[input.duration];
+  const rental = grossRental - discount;
   const setup = input.setup === "assisted" ? p.assistedSetup : input.setup === "full" ? p.fullSetup : 0;
-  const delivery = input.delivery === "mid" ? p.delivery10to25km : input.delivery === "far" ? p.delivery25kmPlus : 0;
+  const delivery = input.delivery === "mid" ? p.delivery10to25km : input.delivery === "far" ? p.delivery25kmPlus : p.delivery0to10km;
   const maintenance = input.maintenance === "monthly" ? p.monthlyMaintenance * months : input.maintenance === "midSeason" ? p.midSeasonCheck : 0;
   const storage = input.storage ? p.winterStorage : 0;
   const total = rental + setup + delivery + maintenance + storage;
+
   return {
+    id: "robot",
     name: "Robot mower rental",
+    category: "robot",
     total,
     monthly,
     deposit: input.deposit ? p.refundableDeposit : undefined,
+    cadence: "season",
     savings: 1000 - total,
+    confidence: custom ? "Needs confirmation" : "High",
+    included: [plan, `${months} month rental`, input.setup === "diy" ? "DIY setup guidance" : input.setup === "assisted" ? "Assisted setup" : "Full setup"],
+    mayChange: ["Boundary complexity", "Slope", "Very uneven lawn", "Damage/theft deposit conditions"],
+    recommendation: "Rental avoids a €1000+ upfront robot mower purchase, storage, and setup uncertainty.",
+    warnings: custom ? ["Lawns over 1000 m² need a custom robot mower quote."] : undefined,
     breakdown: [
-      { label: "Rental period", amount: rental },
-      { label: "Setup", amount: setup },
-      { label: "Delivery", amount: delivery },
-      { label: "Maintenance", amount: maintenance },
-      { label: "Winter storage", amount: storage },
-      { label: "Duration discount", amount: -(monthly * months * discount) }
+      { label: "Rental period", amount: rental, kind: "base" },
+      { label: "Setup", amount: setup, kind: "addon" },
+      { label: "Delivery", amount: delivery, kind: "addon" },
+      { label: "Maintenance", amount: maintenance, kind: "addon" },
+      { label: "Winter storage", amount: storage, kind: "addon" },
+      { label: "Duration discount", amount: -discount, kind: "discount" }
     ]
-  };
+  } satisfies Estimate;
 }
