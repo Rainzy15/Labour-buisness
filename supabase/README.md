@@ -17,7 +17,8 @@ Put them in `.env.local`. Never expose the service role key in client components
 Open Supabase SQL Editor and run:
 
 1. `supabase/migrations/0001_platform_schema.sql`
-2. `supabase/seed.sql`
+2. `supabase/migrations/0002_security_linter_hardening.sql`
+3. `supabase/seed.sql`
 
 The schema creates roles, bookings, contracts, invoices, robot rentals, equipment, messages, notifications, audit logs, and RLS policies.
 
