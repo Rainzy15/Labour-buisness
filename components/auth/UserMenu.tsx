@@ -1,12 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, LogOut, ShieldCheck, UserCircle } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BriefcaseBusiness, CalendarDays, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldCheck, UserCircle } from "lucide-react";
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
 
-export function UserMenu() {
-  const { user, configured } = useAuth();
+type UserMenuProps = {
+  compact?: boolean;
+  onNavigate?: () => void;
+};
+
+export function UserMenu({ compact = false, onNavigate }: UserMenuProps) {
+  const { user, role, configured } = useAuth();
+  const [open, setOpen] = useState(false);
 
   async function logout() {
     if (!configured) return;
@@ -17,26 +25,81 @@ export function UserMenu() {
 
   if (!configured || !user) {
     return (
-      <Link href="/login" className="rounded-full bg-forest px-4 py-2 text-sm font-extrabold text-white transition hover:bg-charcoal">
+      <Link href="/login" onClick={onNavigate} className="inline-flex h-10 items-center rounded-full border border-forest/15 bg-white px-4 text-sm font-extrabold text-forest transition hover:border-forest/30 hover:bg-cream">
         Login
       </Link>
     );
   }
 
+  const menuItems = [
+    { href: "/dashboard", label: "My Dashboard", icon: LayoutDashboard },
+    { href: "/dashboard/bookings", label: "My Bookings", icon: CalendarDays },
+    ...(role === "admin" || role === "manager" ? [{ href: "/admin", label: "Admin Dashboard", icon: ShieldCheck }] : []),
+    ...(role === "employee" || role === "admin" || role === "manager" ? [{ href: "/employee", label: "Employee Portal", icon: BriefcaseBusiness }] : []),
+    { href: "/dashboard/settings", label: "Settings", icon: Settings }
+  ];
+
+  if (compact) {
+    return (
+      <div className="grid gap-2">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link key={item.href} href={item.href} onClick={onNavigate} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-forest">
+              <Icon className="h-4 w-4 text-fresh" /> {item.label}
+            </Link>
+          );
+        })}
+        <button onClick={logout} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left text-sm font-bold text-forest">
+          <LogOut className="h-4 w-4 text-fresh" /> Logout
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center gap-2">
-      <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-forest">
-        <UserCircle className="h-4 w-4" /> Account
-      </Link>
-      <Link href="/admin" className="hidden items-center gap-2 rounded-full bg-lime px-3 py-2 text-sm font-black text-forest xl:inline-flex">
-        <ShieldCheck className="h-4 w-4" /> Admin
-      </Link>
-      <Link href="/dashboard/book" className="hidden items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-forest xl:inline-flex">
-        <LayoutDashboard className="h-4 w-4" /> Book
-      </Link>
-      <button onClick={logout} className="grid h-10 w-10 place-items-center rounded-full bg-forest text-white" aria-label="Logout">
-        <LogOut className="h-4 w-4" />
+    <div className="relative">
+      <button
+        onClick={() => setOpen((value) => !value)}
+        className="inline-flex h-10 items-center gap-2 rounded-full border border-forest/15 bg-white px-4 text-sm font-black text-forest transition hover:border-forest/30 hover:bg-cream"
+        aria-expanded={open}
+      >
+        <UserCircle className="h-4 w-4" />
+        Account
+        <ChevronDown className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`} />
       </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.18 }}
+            className="absolute right-0 top-12 z-50 w-64 overflow-hidden rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium"
+          >
+            <div className="border-b border-forest/10 px-3 py-3">
+              <p className="text-xs font-bold text-charcoal/55">Signed in as</p>
+              <p className="truncate text-sm font-black text-forest">{user.email}</p>
+            </div>
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest"
+                >
+                  <Icon className="h-4 w-4 text-fresh" /> {item.label}
+                </Link>
+              );
+            })}
+            <button onClick={logout} className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
+              <LogOut className="h-4 w-4 text-fresh" /> Logout
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
