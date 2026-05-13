@@ -134,7 +134,7 @@ function answerFor(input: string, fallback: string) {
   const text = input.toLowerCase();
 
   if (text.includes("300") || text.includes("lawn") || text.includes("mow")) {
-    return "For a normal 300m² lawn, a typical visit is usually around €75 before add-ons. Edge trimming, collection, terrain, access, and frequency discounts can change it. Use the Lawn tab for the cleanest estimate.";
+    return "For a normal 300m² lawn, a typical visit is usually around €37.50 before add-ons. Edge trimming, collection, terrain, access, and frequency discounts can change it. Use the Lawn tab for the cleanest estimate.";
   }
 
   if (text.includes("bundle") || text.includes("choose")) {
@@ -142,7 +142,7 @@ function answerFor(input: string, fallback: string) {
   }
 
   if (text.includes("robot") || text.includes("buy") || text.includes("rental")) {
-    return "Robot rental is best if you want a neat lawn without a €1000+ upfront purchase. Small lawns start from €79/month, medium from €99/month, and large from €129/month. Setup and maintenance can be added.";
+    return "Robot rental is best if you want a neat lawn without a €1000+ upfront purchase. Small lawns start from €39.50/month, medium from €49.50/month, and large from €64.50/month. Setup and maintenance can be added.";
   }
 
   if (text.includes("cancel") || text.includes("reschedule")) {
@@ -154,7 +154,7 @@ function answerFor(input: string, fallback: string) {
   }
 
   if (text.includes("winter") || text.includes("snow") || text.includes("salt")) {
-    return "Winter services are weather-dependent. One-time snow/salting visits are calculated by surface and urgency, while standby plans start from €139/month for priority safety visits.";
+    return "Winter services are weather-dependent. One-time snow/salting visits are calculated by surface and urgency, while standby plans start from €69.50/month for priority safety visits.";
   }
 
   if (text.includes("hedge")) {

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, ChevronDown, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
+import { useLanguage } from "@/components/language/LanguageProvider";
 import type { BreakdownLine, Estimate } from "@/lib/pricing";
 import { eur } from "@/lib/pricing";
 
@@ -120,9 +121,10 @@ export function EstimateBreakdown({ lines }: { lines: BreakdownLine[] }) {
 }
 
 export function PricingDisclaimer() {
+  const { t } = useLanguage();
   return (
     <div className="rounded-[24px] border border-forest/10 bg-white p-4 text-sm font-bold leading-6 text-forest shadow-sm">
-      Estimated prices are based on typical Luxembourg garden service rates in 2026. Final pricing may vary depending on terrain, access, waste volume, travel distance, urgency, weather conditions, and exact site conditions.
+      {t("pricing.launchDisclaimer")}
     </div>
   );
 }
@@ -134,9 +136,9 @@ export function BundleSuggestion({ basket }: { basket: Estimate[] }) {
     : ids.includes("leaves") && ids.includes("hedge") && ids.includes("pressure")
       ? "Autumn Clean-Up Bundle: leaves + hedge + pressure washing can save up to 10%."
       : ids.includes("winter")
-        ? "Winter Safety Bundle: snow clearing + salting starts from €139/month."
+        ? "Winter Safety Bundle: snow clearing + salting starts from €69.50/month."
         : ids.includes("robot")
-          ? "Robot Mower Season Bundle: rental + setup + mid-season check from €399/season."
+          ? "Robot Mower Season Bundle: rental + setup + mid-season check from €199.50/season."
           : "Add related services to unlock a bundle recommendation.";
   return <p className="rounded-2xl bg-white/10 p-3 text-sm font-bold text-white/78">{suggestion}</p>;
 }

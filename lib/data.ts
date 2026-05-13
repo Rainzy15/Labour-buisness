@@ -47,7 +47,7 @@ export const seasons = [
     name: "Summer",
     accent: "bg-lime/70 text-forest",
     icon: Sprout,
-    price: "from €50",
+    price: "from €25",
     summary: "Regular mowing, hedge care, weeding, watering support, and green waste removal.",
     services: ["Lawn care", "Hedge care", "Weeding and garden tidy-up", "Watering support", "Green waste removal"]
   },
@@ -55,7 +55,7 @@ export const seasons = [
     name: "Autumn",
     accent: "bg-autumn/15 text-autumn",
     icon: Leaf,
-    price: "from €45",
+    price: "from €22.50",
     summary: "Leaves, pre-winter hedge trimming, terrace cleaning, and winter preparation.",
     services: ["Leaf clearing", "Hedge trimming before winter", "Pressure washing", "Gutter/terrace clean-up", "Garden preparation for winter"]
   },
@@ -63,7 +63,7 @@ export const seasons = [
     name: "Winter",
     accent: "bg-winter text-forest",
     icon: Snowflake,
-    price: "from €35",
+    price: "from €17.50",
     summary: "Snow clearing, salting, access path visits, driveways, and winter safety support.",
     services: ["Snow clearing", "Salting", "Access path clearing", "Driveway clearing", "Winter safety visits"]
   },
@@ -71,7 +71,7 @@ export const seasons = [
     name: "Spring",
     accent: "bg-fresh/15 text-forest",
     icon: Flower2,
-    price: "from €60",
+    price: "from €30",
     summary: "Restart the lawn, wash outdoor surfaces, shape hedges, and refresh planting.",
     services: ["Lawn care restart", "Pressure washing", "Scarifying / aeration", "Hedge shaping", "Planting and garden refresh"]
   }
@@ -82,29 +82,29 @@ export const serviceSections = [
     title: "Summer Services",
     intro: "Keep the garden easy to enjoy during the fastest growing months.",
     items: [
-      ["Lawn Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.25/m² base, minimum €50 per visit", Sprout],
-      ["Hedge Care", "Hedge trimming, shape correction, and height/density adjustments.", "€10/linear metre base", TreePine],
-      ["Weeding & Garden Tidy", "Hourly hand work for beds, borders, paths, and small clean-ups.", "€45/hour", Sparkles],
-      ["Watering Support", "Short visits while clients are away in warmer periods.", "€25-45/visit", Droplets],
-      ["Green Waste Removal", "Add-on collection for clippings, leaves, and trimmings.", "€15-60 depending on quantity", Leaf]
+      ["Lawn Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.125/m² base, minimum €25 per visit", Sprout],
+      ["Hedge Care", "Hedge trimming, shape correction, and height/density adjustments.", "€5/linear metre base", TreePine],
+      ["Weeding & Garden Tidy", "Hourly hand work for beds, borders, paths, and small clean-ups.", "€22.50/hour", Sparkles],
+      ["Watering Support", "Short visits while clients are away in warmer periods.", "€12.50-22.50/visit", Droplets],
+      ["Green Waste Removal", "Add-on collection for clippings, leaves, and trimmings.", "€7.50-30 depending on quantity", Leaf]
     ]
   },
   {
     title: "Autumn Services",
     intro: "Prepare the property for cold weather and heavy leaf fall.",
     items: [
-      ["Leaf Clearing", "Raking, blowing, collection, bagging, or compost pile support.", "€0.20/m² base, minimum €45", Leaf],
-      ["Pressure Washing", "Terraces, paths, patios, and driveways before winter grime sets in.", "€12/m² base, minimum €80", Waves],
-      ["Hedge Pre-Winter Trim", "Neat final shaping before growth slows down.", "€10-15/linear metre", TreePine],
-      ["Garden Winter Prep", "General hourly maintenance for beds, leaves, pots, and outdoor areas.", "€45/hour", CalendarDays]
+      ["Leaf Clearing", "Raking, blowing, collection, bagging, or compost pile support.", "€0.11/m² base, minimum €22.50", Leaf],
+      ["Pressure Washing", "Terraces, paths, patios, and driveways before winter grime sets in.", "€6/m² base, minimum €42.50", Waves],
+      ["Hedge Pre-Winter Trim", "Neat final shaping before growth slows down.", "€5-7.50/linear metre", TreePine],
+      ["Garden Winter Prep", "General hourly maintenance for beds, leaves, pots, and outdoor areas.", "€22.50/hour", CalendarDays]
     ]
   },
   {
     title: "Winter Services",
     intro: "Keep paths, driveways, residences, and small businesses safer in bad weather.",
     items: [
-      ["Snow Clearing", "Paths, driveways, steps, entrances, and access routes.", "€0.35/m² base, minimum €45", Shovel],
-      ["Salting", "Standalone or add-on salting with practical de-icing coverage.", "€0.12/m² base, minimum €35", Snowflake],
+      ["Snow Clearing", "Paths, driveways, steps, entrances, and access routes.", "€0.19/m² base, minimum €22.50", Shovel],
+      ["Salting", "Standalone or add-on salting with practical de-icing coverage.", "€0.07/m² base, minimum €19", Snowflake],
       ["Emergency Winter Visit", "Same-day and early morning visits when conditions change quickly.", "+25% same-day/emergency surcharge", BadgeCheck],
       ["Residence / Small Business Winter Safety", "Priority winter planning for shared entrances and commercial access.", "Custom quote", Home]
     ]
@@ -113,11 +113,11 @@ export const serviceSections = [
     title: "Spring Services",
     intro: "Reset the garden after winter and get it looking sharp early.",
     items: [
-      ["Lawn Restart", "First mow, edge trim, and light clean-up after winter.", "€0.30/m² base, minimum €60", Flower2],
-      ["Pressure Washing", "Refresh terraces, paths, stone, and outdoor surfaces.", "€12/m²", Waves],
-      ["Scarifying / Aeration", "Placeholder service for deeper lawn recovery.", "€0.80/m² base, minimum €90", Sprout],
-      ["Planting / Refresh", "Hourly planting help and seasonal garden refreshes.", "€45/hour", Flower2],
-      ["Hedge Shaping", "Early-season structure and clean growth lines.", "€10/linear metre", TreePine]
+      ["Lawn Restart", "First mow, edge trim, and light clean-up after winter.", "€0.15/m² base, minimum €30", Flower2],
+      ["Pressure Washing", "Refresh terraces, paths, stone, and outdoor surfaces.", "€6/m²", Waves],
+      ["Scarifying / Aeration", "Placeholder service for deeper lawn recovery.", "€0.40/m² base, minimum €45", Sprout],
+      ["Planting / Refresh", "Hourly planting help and seasonal garden refreshes.", "€22.50/hour", Flower2],
+      ["Hedge Shaping", "Early-season structure and clean growth lines.", "€5/linear metre", TreePine]
     ]
   }
 ];
@@ -128,7 +128,7 @@ export const bundles = [
     bestFor: "Families who want a neat lawn all season.",
     includes: ["Weekly or biweekly mowing", "Edge trimming", "1 hedge tidy session", "Green waste add-on discount"],
     frequency: "Weekly or every 2 weeks",
-    price: "from €149/month",
+    price: "from €74.50/month",
     savings: "up to 12%"
   },
   {
@@ -136,7 +136,7 @@ export const bundles = [
     bestFor: "Homes that need steady garden care.",
     includes: ["Lawn care", "Hedge care", "Weeding", "Green waste removal"],
     frequency: "Monthly plan",
-    price: "from €249/month",
+    price: "from €124.50/month",
     savings: "up to 15%"
   },
   {
@@ -144,7 +144,7 @@ export const bundles = [
     bestFor: "Leaf-heavy gardens and terraces.",
     includes: ["Leaf clearing", "Hedge pre-winter trim", "Terrace/path pressure wash discount"],
     frequency: "One-off or 3 visits",
-    price: "from €199",
+    price: "from €99.50",
     savings: "up to 10%"
   },
   {
@@ -152,7 +152,7 @@ export const bundles = [
     bestFor: "Homes, landlords, and small offices.",
     includes: ["Snow clearing", "Salting", "Priority visits", "Path/driveway safety"],
     frequency: "Winter standby",
-    price: "from €129/month",
+    price: "from €64.50/month",
     savings: "custom"
   },
   {
@@ -160,7 +160,7 @@ export const bundles = [
     bestFor: "A clean restart after winter.",
     includes: ["First mow", "Lawn restart", "Pressure washing", "Hedge shaping"],
     frequency: "One-off reset",
-    price: "from €229",
+    price: "from €114.50",
     savings: "up to 10%"
   },
   {
@@ -168,7 +168,7 @@ export const bundles = [
     bestFor: "Trying automatic mowing before buying.",
     includes: ["Robot mower rental", "Assisted setup", "Mid-season check", "Optional winter storage"],
     frequency: "Seasonal rental",
-    price: "from €399/season",
+    price: "from €199.50/season",
     savings: "vs. €1000 upfront"
   }
 ];
@@ -202,7 +202,7 @@ export const faqs = {
   ],
   "Robot Rental": [
     ["Is setup included?", "DIY setup is included in the base rental. Assisted or full setup can be added."],
-    ["Is there a deposit?", "Yes, the placeholder deposit is €200 and is shown separately from the service price."],
+    ["Is there a deposit?", "Yes, the placeholder deposit is €100 and is shown separately from the service price."],
     ["What lawn size works best?", "The rental calculator supports lawns from 100-1000 m²."],
     ["Can I rent only for one month?", "Yes. Longer rentals receive seasonal discounts."]
   ]
@@ -224,9 +224,9 @@ export const imageAlt = {
 };
 
 export const quickStats = [
-  ["Typical lawn visit", "from €55"],
-  ["Robot mower rental", "from €79/month"],
-  ["Winter salting", "from €35/visit"]
+  ["Typical lawn visit", "from €27.50"],
+  ["Robot mower rental", "from €39.50/month"],
+  ["Winter salting", "from €19/visit"]
 ];
 
 export const process = [

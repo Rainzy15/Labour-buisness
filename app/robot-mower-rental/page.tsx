@@ -5,7 +5,7 @@ import { ButtonLink, Container, Eyebrow, MotionCard, Section } from "@/component
 
 export default function RobotPage() {
   const rows = [
-    ["Upfront cost", "Approx. €1000 upfront", "From €79/month"],
+    ["Upfront cost", "Approx. €1000 upfront", "From €39.50/month"],
     ["Maintenance", "Owner handles blades and checks", "Optional monthly or mid-season check"],
     ["Storage", "You store it in winter", "Optional winter storage"],
     ["Flexibility", "Long-term commitment", "Choose 1, 3, 6, or 8 months"],
@@ -36,7 +36,7 @@ export default function RobotPage() {
         <Container>
           <Eyebrow>Rental tiers</Eyebrow>
           <div className="grid gap-5 md:grid-cols-3">
-            {[["Small lawn", "up to 300 m²", "from €79/month"], ["Medium lawn", "301-600 m²", "from €99/month"], ["Large lawn", "601-1000 m²", "from €129/month"]].map(([name, size, price]) => (
+            {[["Small lawn", "up to 300 m²", "from €39.50/month"], ["Medium lawn", "301-600 m²", "from €49.50/month"], ["Large lawn", "601-1000 m²", "from €64.50/month"]].map(([name, size, price]) => (
               <MotionCard key={name}><Bot className="mb-4 h-8 w-8 text-fresh" /><h2 className="text-2xl font-black text-forest">{name}</h2><p className="mt-2 text-charcoal/70">{size}</p><p className="mt-5 text-3xl font-black text-forest">{price}</p></MotionCard>
             ))}
           </div>

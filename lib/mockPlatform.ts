@@ -1,14 +1,14 @@
 export const mockBookings = [
-  { id: "BK-1042", customer: "Claire Muller", service: "Lawn care", date: "2026-05-15", time: "09:00", status: "requested", price: "€78", employee: "Unassigned" },
-  { id: "BK-1041", customer: "Tom Weber", service: "Hedge care", date: "2026-05-15", time: "13:30", status: "scheduled", price: "€145", employee: "Mia" },
-  { id: "BK-1040", customer: "Sofia Ribeiro", service: "Pressure washing", date: "2026-05-16", time: "10:30", status: "confirmed", price: "€210", employee: "Leo" },
-  { id: "BK-1039", customer: "Residence Kirchberg", service: "Winter safety", date: "2026-05-17", time: "08:00", status: "quote_sent", price: "€139/mo", employee: "Unassigned" }
+  { id: "BK-1042", customer: "Claire Muller", service: "Lawn care", date: "2026-05-15", time: "09:00", status: "requested", price: "€39", employee: "Unassigned" },
+  { id: "BK-1041", customer: "Tom Weber", service: "Hedge care", date: "2026-05-15", time: "13:30", status: "scheduled", price: "€72", employee: "Mia" },
+  { id: "BK-1040", customer: "Sofia Ribeiro", service: "Pressure washing", date: "2026-05-16", time: "10:30", status: "confirmed", price: "€105", employee: "Leo" },
+  { id: "BK-1039", customer: "Residence Kirchberg", service: "Winter safety", date: "2026-05-17", time: "08:00", status: "quote_sent", price: "€69.50/mo", employee: "Unassigned" }
 ];
 
 export const mockCustomers = [
-  { id: "CU-301", name: "Claire Muller", commune: "Bertrange", lifetime: "€640", lastService: "2026-04-29", flag: "VIP" },
-  { id: "CU-302", name: "Tom Weber", commune: "Luxembourg City", lifetime: "€420", lastService: "2026-05-03", flag: "Standard" },
-  { id: "CU-303", name: "Sofia Ribeiro", commune: "Mamer", lifetime: "€980", lastService: "2026-05-08", flag: "Bundle lead" }
+  { id: "CU-301", name: "Claire Muller", commune: "Bertrange", lifetime: "€320", lastService: "2026-04-29", flag: "VIP" },
+  { id: "CU-302", name: "Tom Weber", commune: "Luxembourg City", lifetime: "€210", lastService: "2026-05-03", flag: "Standard" },
+  { id: "CU-303", name: "Sofia Ribeiro", commune: "Mamer", lifetime: "€490", lastService: "2026-05-08", flag: "Bundle lead" }
 ];
 
 export const mockEmployees = [
@@ -18,14 +18,14 @@ export const mockEmployees = [
 ];
 
 export const mockContracts = [
-  { id: "CT-500", customer: "Claire Muller", title: "Summer Lawn Care Bundle", status: "active", value: "€149/mo" },
-  { id: "CT-501", customer: "Residence Kirchberg", title: "Winter Safety Bundle", status: "draft", value: "€249/mo" }
+  { id: "CT-500", customer: "Claire Muller", title: "Summer Lawn Care Bundle", status: "active", value: "€74.50/mo" },
+  { id: "CT-501", customer: "Residence Kirchberg", title: "Winter Safety Bundle", status: "draft", value: "€124.50/mo" }
 ];
 
 export const mockInvoices = [
-  { id: "INV-2026-001", customer: "Claire Muller", status: "paid", total: "€149", due: "2026-05-01" },
-  { id: "INV-2026-002", customer: "Tom Weber", status: "sent", total: "€145", due: "2026-05-20" },
-  { id: "INV-2026-003", customer: "Sofia Ribeiro", status: "overdue", total: "€210", due: "2026-05-10" }
+  { id: "INV-2026-001", customer: "Claire Muller", status: "paid", total: "€74.50", due: "2026-05-01" },
+  { id: "INV-2026-002", customer: "Tom Weber", status: "sent", total: "€72", due: "2026-05-20" },
+  { id: "INV-2026-003", customer: "Sofia Ribeiro", status: "overdue", total: "€105", due: "2026-05-10" }
 ];
 
 export const mockEquipment = [
@@ -36,6 +36,6 @@ export const mockEquipment = [
 ];
 
 export const mockRobotRentals = [
-  { id: "RR-700", customer: "Sofia Ribeiro", plan: "Medium", monthly: "€99", status: "active", deposit: "held" },
-  { id: "RR-701", customer: "Tom Weber", plan: "Small", monthly: "€79", status: "requested", deposit: "pending" }
+  { id: "RR-700", customer: "Sofia Ribeiro", plan: "Medium", monthly: "€49.50", status: "active", deposit: "held" },
+  { id: "RR-701", customer: "Tom Weber", plan: "Small", monthly: "€39.50", status: "requested", deposit: "pending" }
 ];

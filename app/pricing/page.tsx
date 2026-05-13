@@ -9,10 +9,10 @@ import { Container, Eyebrow, Section } from "@/components/ui";
 export default function PricingPage() {
   const { t } = useLanguage();
   const previewCards = [
-    [t("pricing.card.lawn"), "from €55"],
-    [t("pricing.card.garden"), "from €55/h"],
-    [t("pricing.card.robot"), "from €79/month"],
-    [t("pricing.card.winter"), "from €139/month"]
+    [t("pricing.card.lawn"), t("pricing.preview.lawn")],
+    [t("pricing.card.garden"), t("pricing.preview.garden")],
+    [t("pricing.card.robot"), t("pricing.preview.robot")],
+    [t("pricing.card.winter"), t("pricing.preview.winter")]
   ];
   const badges = [t("pricing.badge.market"), t("pricing.badge.callout"), t("pricing.badge.savings"), t("pricing.badge.quote")];
 

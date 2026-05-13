@@ -33,13 +33,13 @@ type HourlyState = Parameters<typeof calculateHourly>[0];
 type RobotState = Parameters<typeof calculateRobot>[0];
 
 const tabs: Array<{ id: Tab; label: string; price: string; icon: React.ComponentType<{ className?: string }> }> = [
-  { id: "lawn", label: "Lawn", price: "from €55", icon: Sprout },
-  { id: "hedges", label: "Hedges", price: "from €65", icon: Scissors },
-  { id: "leaves", label: "Leaves", price: "from €50", icon: Leaf },
-  { id: "pressure", label: "Pressure", price: "from €85", icon: Waves },
-  { id: "winter", label: "Winter", price: "from €139/mo", icon: Snowflake },
-  { id: "hourly", label: "Hourly", price: "from €55/h", icon: Clock },
-  { id: "robot", label: "Robot", price: "from €79/mo", icon: Bot }
+  { id: "lawn", label: "Lawn", price: "from €27.50", icon: Sprout },
+  { id: "hedges", label: "Hedges", price: "from €32.50", icon: Scissors },
+  { id: "leaves", label: "Leaves", price: "from €25", icon: Leaf },
+  { id: "pressure", label: "Pressure", price: "from €42.50", icon: Waves },
+  { id: "winter", label: "Winter", price: "from €69.50/mo", icon: Snowflake },
+  { id: "hourly", label: "Hourly", price: "from €27.50/h", icon: Clock },
+  { id: "robot", label: "Robot", price: "from €39.50/mo", icon: Bot }
 ];
 
 export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab }) {
@@ -117,7 +117,7 @@ export function RobotControls({ robot, setRobot }: { robot: RobotState; setRobot
         <Choice label="Delivery distance" value={robot.delivery} onChange={(delivery) => setRobot({ ...robot, delivery })} options={[["near", "0-10 km"], ["mid", "10-25 km"], ["far", "25km+"]]} />
       </Grid>
       <ToggleGrid>
-        <Toggle checked={robot.deposit} onChange={(deposit) => setRobot({ ...robot, deposit })} label="Show refundable €200 deposit" />
+        <Toggle checked={robot.deposit} onChange={(deposit) => setRobot({ ...robot, deposit })} label="Show refundable €100 deposit" />
         <Toggle checked={robot.storage} onChange={(storage) => setRobot({ ...robot, storage })} label="Optional winter storage" />
       </ToggleGrid>
     </>

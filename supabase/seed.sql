@@ -1,11 +1,11 @@
 insert into public.services (name, category, season, description, base_price, pricing_unit, active) values
-('Lawn Care', 'lawn', 'Summer', 'Regular mowing, edges, and optional collection.', 55, 'visit', true),
-('Hedge Care', 'hedge', 'Summer', 'Hedge trimming and shaping.', 65, 'job', true),
-('Leaf Clearing', 'leaves', 'Autumn', 'Raking, blowing, bagging, and take-away options.', 50, 'visit', true),
-('Pressure Washing', 'pressure', 'Spring', 'Terraces, driveways, paths, and lower facade cleaning.', 85, 'job', true),
-('Winter Safety', 'winter', 'Winter', 'Snow clearing, salting, and standby visits.', 139, 'month', true),
-('Robot Mower Rental', 'robot', 'Summer', 'Seasonal robot mower rental with setup options.', 79, 'month', true),
-('Garden Maintenance', 'hourly', 'All year', 'Weeding, planting, tidy-up, and minor outdoor help.', 55, 'hour', true);
+('Lawn Care', 'lawn', 'Summer', 'Regular mowing, edges, and optional collection.', 27.5, 'visit', true),
+('Hedge Care', 'hedge', 'Summer', 'Hedge trimming and shaping.', 32.5, 'job', true),
+('Leaf Clearing', 'leaves', 'Autumn', 'Raking, blowing, bagging, and take-away options.', 25, 'visit', true),
+('Pressure Washing', 'pressure', 'Spring', 'Terraces, driveways, paths, and lower facade cleaning.', 42.5, 'job', true),
+('Winter Safety', 'winter', 'Winter', 'Snow clearing, salting, and standby visits.', 69.5, 'month', true),
+('Robot Mower Rental', 'robot', 'Summer', 'Seasonal robot mower rental with setup options.', 39.5, 'month', true),
+('Garden Maintenance', 'hourly', 'All year', 'Weeding, planting, tidy-up, and minor outdoor help.', 27.5, 'hour', true);
 
 insert into public.equipment (name, type, brand, model, serial_number, purchase_price, purchase_date, status, notes) values
 ('Honda lawn mower', 'lawn_mower', 'Honda', 'HRX', 'LLC-MOW-001', 950, '2026-02-20', 'available', 'Primary mowing unit'),

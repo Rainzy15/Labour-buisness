@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useFormState } from "react-dom";
 import { createBookingAction, type ActionState } from "@/app/dashboard/actions";
 import type { AddressRecord, ServiceRecord } from "@/lib/dashboardData";
+import { PRICING } from "@/lib/pricing";
 
 const initialState: ActionState = { ok: false, message: "" };
 
@@ -13,10 +14,10 @@ export function BookingRequestForm({ addresses, services }: { addresses: Address
   const [surface, setSurface] = useState(250);
   const selectedService = useMemo(() => services.find((service) => service.id === selectedServiceId), [services, selectedServiceId]);
   const estimated = useMemo(() => {
-    const base = Number(selectedService?.base_price ?? 55);
-    if (selectedService?.category === "lawn") return Math.max(55, surface * 0.25);
-    if (selectedService?.category === "pressure") return Math.max(85, surface * 12);
-    if (selectedService?.category === "leaves") return Math.max(50, surface * 0.22);
+    const base = Number(selectedService?.base_price ?? PRICING.lawn.minimumVisit);
+    if (selectedService?.category === "lawn") return Math.max(PRICING.lawn.minimumVisit, surface * PRICING.lawn.basePerSqm);
+    if (selectedService?.category === "pressure") return Math.max(PRICING.pressureWashing.minimumJob, surface * PRICING.pressureWashing.basePerSqm);
+    if (selectedService?.category === "leaves") return Math.max(PRICING.leaves.minimumVisit, surface * PRICING.leaves.basePerSqm);
     return base;
   }, [selectedService, surface]);
 
