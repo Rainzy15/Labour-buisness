@@ -1,4 +1,5 @@
 import { PricingCalculator } from "@/components/PricingCalculator";
+import { PricingAssistant } from "@/components/pricing/PricingAssistant";
 import { PricingDisclaimer, SeasonalGradientBackground } from "@/components/pricing/PricingUi";
 import { Container, Eyebrow, Section } from "@/components/ui";
 
@@ -43,6 +44,7 @@ export default function PricingPage() {
           <PricingDisclaimer />
         </div>
         <PricingCalculator />
+        <PricingAssistant />
       </Container>
     </Section>
   );
