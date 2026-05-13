@@ -6,37 +6,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, Sprout, X } from "lucide-react";
 import { useState } from "react";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { Language, useLanguage } from "@/components/language/LanguageProvider";
 
 const primaryNav = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/bundles", label: "Bundles" },
-  { href: "/robot-mower-rental", label: "Robot Rental" },
-  { href: "/about", label: "About" }
+  { href: "/", labelKey: "nav.home" },
+  { href: "/services", labelKey: "nav.services" },
+  { href: "/pricing", labelKey: "nav.pricing" },
+  { href: "/bundles", labelKey: "nav.bundles" },
+  { href: "/robot-mower-rental", labelKey: "nav.robot" },
+  { href: "/about", labelKey: "nav.about" }
 ];
 
 const serviceLinks = [
-  { href: "/services#summer-services", label: "Lawn Care" },
-  { href: "/services#summer-services", label: "Hedge Care" },
-  { href: "/services#autumn-services", label: "Leaf Clearing" },
-  { href: "/services#autumn-services", label: "Pressure Washing" },
-  { href: "/services#winter-services", label: "Winter Services" },
-  { href: "/robot-mower-rental", label: "Robot Mower Rental" },
-  { href: "/equipment", label: "Equipment" }
+  { href: "/services#summer-services", labelKey: "services.lawn" },
+  { href: "/services#summer-services", labelKey: "services.hedge" },
+  { href: "/services#autumn-services", labelKey: "services.leaves" },
+  { href: "/services#autumn-services", labelKey: "services.pressure" },
+  { href: "/services#winter-services", labelKey: "services.winter" },
+  { href: "/robot-mower-rental", labelKey: "services.robot" },
+  { href: "/equipment", labelKey: "nav.equipment" }
 ];
 
 const mobileLinks = [
   ...primaryNav,
-  { href: "/equipment", label: "Equipment" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" }
+  { href: "/equipment", labelKey: "nav.equipment" },
+  { href: "/faq", labelKey: "nav.faq" },
+  { href: "/contact", labelKey: "nav.contact" }
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
+  const { language, setLanguage, t, languageLabels } = useLanguage();
 
   return (
     <header className="sticky top-0 z-50 border-b border-[rgba(18,61,42,0.12)] bg-[#FAF7EF]/90 backdrop-blur-xl">
@@ -53,7 +55,7 @@ export function Header() {
             item.href === "/services" ? (
               <div key={item.href} className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
                 <Link href={item.href} className={navClass(pathname === item.href)}>
-                  Services <ChevronDown className="h-3.5 w-3.5" />
+                  {t(item.labelKey)} <ChevronDown className="h-3.5 w-3.5" />
                 </Link>
                 <AnimatePresence>
                   {servicesOpen && (
@@ -65,8 +67,8 @@ export function Header() {
                       className="absolute left-0 top-11 w-64 rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium"
                     >
                       {serviceLinks.map((link) => (
-                        <Link key={`${link.href}-${link.label}`} href={link.href} className="block rounded-2xl px-4 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
-                          {link.label}
+                        <Link key={`${link.href}-${link.labelKey}`} href={link.href} className="block rounded-2xl px-4 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
+                          {t(link.labelKey)}
                         </Link>
                       ))}
                     </motion.div>
@@ -75,28 +77,34 @@ export function Header() {
               </div>
             ) : (
               <Link key={item.href} href={item.href} className={navClass(pathname === item.href)}>
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             )
           )}
         </div>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <select aria-label="Language selector" className="h-10 rounded-full border border-forest/15 bg-white px-3 text-sm font-bold text-forest outline-none transition hover:border-forest/30">
-            <option>EN</option>
-            <option>FR</option>
-            <option>DE</option>
-            <option>LU</option>
+          <select
+            aria-label={t("nav.language")}
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as Language)}
+            className="h-10 rounded-full border border-forest/15 bg-white px-3 text-sm font-bold text-forest outline-none transition hover:border-forest/30"
+          >
+            {Object.entries(languageLabels).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
           <UserMenu />
           <Link href="/dashboard/book" className="inline-flex h-10 items-center rounded-full bg-forest px-5 text-sm font-black text-white transition hover:bg-[#0d2f20]">
-            Book
+            {t("nav.book")}
           </Link>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
           <Link href="/dashboard/book" className="inline-flex h-10 items-center rounded-full bg-forest px-4 text-sm font-black text-white">
-            Book
+            {t("nav.book")}
           </Link>
           <button className="grid h-10 w-10 place-items-center rounded-full border border-forest/15 bg-white text-forest" onClick={() => setOpen((value) => !value)} aria-label="Open menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -110,17 +118,17 @@ export function Header() {
             <div className="mx-auto grid max-w-7xl gap-2">
               {mobileLinks.map((item) => (
                 <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="rounded-2xl bg-white px-4 py-3 text-sm font-bold text-forest">
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
               <div className="rounded-2xl bg-white p-3">
                 <label className="grid gap-2 text-xs font-black uppercase tracking-[0.16em] text-charcoal/50">
-                  Language
-                  <select className="rounded-2xl border border-forest/15 bg-cream px-3 py-3 text-sm font-bold text-forest">
-                    <option>English</option>
-                    <option>Français</option>
-                    <option>Deutsch</option>
-                    <option>Lëtzebuergesch</option>
+                  {t("nav.language")}
+                  <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} className="rounded-2xl border border-forest/15 bg-cream px-3 py-3 text-sm font-bold text-forest">
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="lu">Lëtzebuergesch</option>
                   </select>
                 </label>
               </div>

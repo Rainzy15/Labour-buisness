@@ -1,16 +1,20 @@
+"use client";
+
 import { PricingCalculator } from "@/components/PricingCalculator";
+import { useLanguage } from "@/components/language/LanguageProvider";
 import { PricingAssistant } from "@/components/pricing/PricingAssistant";
 import { PricingDisclaimer, SeasonalGradientBackground } from "@/components/pricing/PricingUi";
 import { Container, Eyebrow, Section } from "@/components/ui";
 
 export default function PricingPage() {
+  const { t } = useLanguage();
   const previewCards = [
-    ["Lawn visit", "from €55"],
-    ["Garden maintenance", "from €55/h"],
-    ["Robot rental", "from €79/month"],
-    ["Winter safety", "from €139/month"]
+    [t("pricing.card.lawn"), "from €55"],
+    [t("pricing.card.garden"), "from €55/h"],
+    [t("pricing.card.robot"), "from €79/month"],
+    [t("pricing.card.winter"), "from €139/month"]
   ];
-  const badges = ["Based on Luxembourg market rates", "No hidden call-out fee shown after booking", "Bundle savings available", "Final quote confirmed before work"];
+  const badges = [t("pricing.badge.market"), t("pricing.badge.callout"), t("pricing.badge.savings"), t("pricing.badge.quote")];
 
   return (
     <Section className="overflow-hidden bg-cream pb-24 lg:pb-16">
@@ -18,10 +22,10 @@ export default function PricingPage() {
       <Container className="relative">
         <div className="mb-8 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
           <div>
-            <Eyebrow>Transparent Luxembourg pricing</Eyebrow>
-            <h1 className="text-5xl font-black leading-tight text-forest sm:text-6xl">Build your garden care estimate in seconds.</h1>
+            <Eyebrow>{t("pricing.eyebrow")}</Eyebrow>
+            <h1 className="text-5xl font-black leading-tight text-forest sm:text-6xl">{t("pricing.title")}</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-charcoal/70">
-              Adjust the sliders, choose your add-ons, and see a transparent Luxembourg-based estimate before booking.
+              {t("pricing.subtitle")}
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {badges.map((badge) => (

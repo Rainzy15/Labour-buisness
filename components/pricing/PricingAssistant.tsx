@@ -3,35 +3,42 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, MessageCircle, Send, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/components/language/LanguageProvider";
 
 type ChatMessage = {
   from: "assistant" | "user";
   text: string;
 };
 
-const quickPrompts = [
-  "How much for a 300m² lawn?",
-  "Which bundle should I choose?",
-  "Robot mower rental vs buying?",
-  "Can I cancel or reschedule?",
-  "What affects the final quote?"
-];
-
 export function PricingAssistant() {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       from: "assistant",
-      text: "Hi, I’m the LuxLawn pricing assistant. I can help you choose a service, understand estimates, and decide whether to book a visit."
+      text: t("assistant.welcome")
     }
   ]);
+  const quickPrompts = useMemo(
+    () => [t("assistant.prompt.lawn"), t("assistant.prompt.bundle"), t("assistant.prompt.robot"), t("assistant.prompt.cancel"), t("assistant.prompt.quote")],
+    [t]
+  );
+
+  useEffect(() => {
+    setMessages((current) => {
+      if (current.length === 1 && current[0]?.from === "assistant") {
+        return [{ from: "assistant", text: t("assistant.welcome") }];
+      }
+      return current;
+    });
+  }, [t]);
 
   function ask(text: string) {
     const clean = text.trim();
     if (!clean) return;
-    setMessages((current) => [...current, { from: "user", text: clean }, { from: "assistant", text: answerFor(clean) }]);
+    setMessages((current) => [...current, { from: "user", text: clean }, { from: "assistant", text: answerFor(clean, t("assistant.fallback")) }]);
     setInput("");
   }
 
@@ -43,7 +50,7 @@ export function PricingAssistant() {
         onClick={() => setOpen(true)}
         className="fixed bottom-24 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-forest px-5 py-3 text-sm font-black text-white shadow-premium transition hover:bg-[#0d2f20] lg:bottom-24 lg:right-6"
       >
-        <MessageCircle className="h-4 w-4" /> Ask pricing assistant
+        <MessageCircle className="h-4 w-4" /> {t("assistant.button")}
       </button>
 
       <AnimatePresence>
@@ -61,11 +68,11 @@ export function PricingAssistant() {
                   <Bot className="h-5 w-5" />
                 </span>
                 <div>
-                  <h2 className="font-black">LuxLawn Assistant</h2>
-                  <p className="text-xs text-white/65">Rule-based helper, no AI cost</p>
+                  <h2 className="font-black">{t("assistant.title")}</h2>
+                  <p className="text-xs text-white/65">{t("assistant.note")}</p>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="grid h-9 w-9 place-items-center rounded-full bg-white/10" aria-label="Close assistant">
+              <button onClick={() => setOpen(false)} className="grid h-9 w-9 place-items-center rounded-full bg-white/10" aria-label={t("assistant.close")}>
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -100,7 +107,7 @@ export function PricingAssistant() {
                 <input
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
-                  placeholder="Ask about price, bundles, booking..."
+                  placeholder={t("assistant.placeholder")}
                   className="min-w-0 flex-1 rounded-full border border-forest/15 bg-cream px-4 py-3 text-sm outline-none focus:ring-4 focus:ring-lime/30"
                 />
                 <button className="grid h-12 w-12 place-items-center rounded-full bg-forest text-white" aria-label="Send message">
@@ -109,10 +116,10 @@ export function PricingAssistant() {
               </form>
               <div className="mt-3 flex gap-2">
                 <Link href="/dashboard/book" className="flex-1 rounded-full bg-lime px-4 py-2 text-center text-xs font-black text-forest">
-                  Book
+                  {t("assistant.book")}
                 </Link>
                 <Link href="/contact" className="flex-1 rounded-full bg-cream px-4 py-2 text-center text-xs font-black text-forest">
-                  Contact
+                  {t("assistant.contact")}
                 </Link>
               </div>
             </div>
@@ -123,7 +130,7 @@ export function PricingAssistant() {
   );
 }
 
-function answerFor(input: string) {
+function answerFor(input: string, fallback: string) {
   const text = input.toLowerCase();
 
   if (text.includes("300") || text.includes("lawn") || text.includes("mow")) {
@@ -154,5 +161,5 @@ function answerFor(input: string) {
     return "Hedge pricing depends mainly on linear metres, height, density, shaping precision, access, and waste removal. Hedges over 2.5m may need confirmation or special equipment.";
   }
 
-  return "I can help with lawn mowing, hedges, leaves, pressure washing, winter salting, bundles, robot mower rental, and booking. Try asking about your garden size, season, or service type.";
+  return fallback;
 }
