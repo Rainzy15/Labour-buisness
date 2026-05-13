@@ -3,6 +3,7 @@ import "./globals.css";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { FloatingCta } from "@/components/FloatingCta";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 
 export const metadata: Metadata = {
   title: "LuxLawn Care | Lawn Mowing & Garden Services Luxembourg",
@@ -14,10 +15,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main>{children}</main>
-        <FloatingCta />
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <FloatingCta />
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

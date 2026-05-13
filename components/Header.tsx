@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, Sprout, X } from "lucide-react";
 import { useState } from "react";
 import { navItems } from "@/lib/data";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -28,9 +29,8 @@ export function Header() {
         </div>
         <div className="hidden items-center gap-2 lg:flex">
           <div className="rounded-full border border-forest/10 bg-white px-3 py-2 text-xs font-black text-forest">EN / FR / DE / LU</div>
-          <Link href="/pricing" className="rounded-full bg-forest px-4 py-2 text-sm font-extrabold text-white transition hover:bg-charcoal">
-            Get instant estimate
-          </Link>
+          <Link href="/pricing" className="rounded-full bg-forest px-4 py-2 text-sm font-extrabold text-white transition hover:bg-charcoal">Get instant estimate</Link>
+          <UserMenu />
         </div>
         <button className="grid h-11 w-11 place-items-center rounded-full bg-white text-forest lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Open menu">
           {open ? <X /> : <Menu />}
