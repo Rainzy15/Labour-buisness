@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
 import de from "@/messages/de.json";
@@ -74,14 +75,16 @@ const textOriginals = new WeakMap<Text, string>();
 const attrOriginals = new WeakMap<Element, Record<string, string>>();
 
 function DomTranslator({ language }: { language: Language }) {
-  useEffect(() => {
-    const translatePage = () => translateNode(document.body, language);
-    translatePage();
+  const pathname = usePathname();
 
-    const observer = new MutationObserver(() => translatePage());
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["placeholder", "aria-label", "title"] });
-    return () => observer.disconnect();
-  }, [language]);
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => translateNode(document.body, language));
+    const timeout = window.setTimeout(() => translateNode(document.body, language), 250);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, [language, pathname]);
 
   return null;
 }
@@ -97,7 +100,10 @@ function translateNode(root: Node, language: Language) {
     if (shouldSkip(node.parentElement)) return;
     if (!textOriginals.has(node)) textOriginals.set(node, node.nodeValue ?? "");
     const original = textOriginals.get(node) ?? "";
-    node.nodeValue = translateWithWhitespace(original, language);
+    const nextValue = translateWithWhitespace(original, language);
+    if (node.nodeValue !== nextValue) {
+      node.nodeValue = nextValue;
+    }
   });
 
   if (root instanceof Element || root instanceof Document || root instanceof DocumentFragment) {
@@ -112,7 +118,10 @@ function translateNode(root: Node, language: Language) {
           originals[attr] = value;
           attrOriginals.set(element, originals);
         }
-        element.setAttribute(attr, translatePhrase(originals[attr], language));
+        const nextValue = translatePhrase(originals[attr], language);
+        if (element.getAttribute(attr) !== nextValue) {
+          element.setAttribute(attr, nextValue);
+        }
       });
     });
   }
