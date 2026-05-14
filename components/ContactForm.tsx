@@ -38,7 +38,7 @@ export function ContactForm() {
         <Input name="email" label="Email" type="email" />
         <Input name="phone" label="Phone" />
         <Input name="commune" label="Address / commune" />
-        <Field label="Service needed"><Select name="service"><option>Lawn care</option><option>Hedge care</option><option>Leaf clearing</option><option>Pressure washing</option><option>Snow clearing / salting</option><option>Robot mower rental</option><option>Seasonal bundle</option></Select></Field>
+        <Field label="Service needed"><Select name="service"><option>Lawn care</option><option>Hedge care</option><option>Leaf clearing</option><option>Pressure washing</option><option>Snow clearing / salting</option><option>Garden maintenance</option><option>Seasonal bundle</option></Select></Field>
         <Field label="Season"><Select name="season"><option>Spring</option><option>Summer</option><option>Autumn</option><option>Winter</option></Select></Field>
         <Input name="size" label="Garden size / surface area" placeholder="e.g. 350 m²" />
         <Input name="date" label="Preferred date" type="date" />

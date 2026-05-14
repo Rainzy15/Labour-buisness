@@ -22,7 +22,7 @@ export function PricingAssistant() {
     }
   ]);
   const quickPrompts = useMemo(
-    () => [t("assistant.prompt.lawn"), t("assistant.prompt.bundle"), t("assistant.prompt.robot"), t("assistant.prompt.cancel"), t("assistant.prompt.quote")],
+    () => [t("assistant.prompt.lawn"), t("assistant.prompt.bundle"), t("assistant.prompt.hedge"), t("assistant.prompt.cancel"), t("assistant.prompt.quote")],
     [t]
   );
 
@@ -138,11 +138,7 @@ function answerFor(input: string, fallback: string) {
   }
 
   if (text.includes("bundle") || text.includes("choose")) {
-    return "Best bundle depends on the season: Summer Lawn Care is good for regular mowing, Autumn Clean-Up is best for leaves plus hedge/terrace work, Winter Safety is for snow and salting, and Robot Mower Season is for trying automatic mowing.";
-  }
-
-  if (text.includes("robot") || text.includes("buy") || text.includes("rental")) {
-    return "Robot rental is best if you want a neat lawn without a €1000+ upfront purchase. Small lawns start from €39.50/month, medium from €49.50/month, and large from €64.50/month. Setup and maintenance can be added.";
+    return "Best bundle depends on the season: Summer Lawn Care is good for regular mowing, Autumn Clean-Up is best for leaves plus hedge/terrace work, Winter Safety is for snow and salting, and Monthly Garden Maintenance is best for ongoing tidy-up.";
   }
 
   if (text.includes("cancel") || text.includes("reschedule")) {

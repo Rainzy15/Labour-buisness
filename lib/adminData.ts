@@ -57,14 +57,13 @@ export type AdminEmployee = {
 };
 
 export async function getAdminOverviewData() {
-  if (!hasSupabaseEnv()) return { bookings: [], customers: [], employees: [], equipment: [], robotRentals: [], contracts: [], invoices: [] };
+  if (!hasSupabaseEnv()) return { bookings: [], customers: [], employees: [], equipment: [], contracts: [], invoices: [] };
   const supabase = createClient();
-  const [bookings, customers, employees, equipment, robotRentals, contracts, invoices] = await Promise.all([
+  const [bookings, customers, employees, equipment, contracts, invoices] = await Promise.all([
     getAdminBookings(),
     getAdminCustomers(),
     getAdminEmployees(),
     supabase.from("equipment").select("*"),
-    supabase.from("robot_rentals").select("*"),
     supabase.from("contracts").select("*"),
     supabase.from("invoices").select("*")
   ]);
@@ -74,7 +73,6 @@ export async function getAdminOverviewData() {
     customers,
     employees,
     equipment: equipment.data ?? [],
-    robotRentals: robotRentals.data ?? [],
     contracts: contracts.data ?? [],
     invoices: invoices.data ?? []
   };

@@ -11,7 +11,7 @@ export default function PricingPage() {
   const previewCards = [
     [t("pricing.card.lawn"), t("pricing.preview.lawn")],
     [t("pricing.card.garden"), t("pricing.preview.garden")],
-    [t("pricing.card.robot"), t("pricing.preview.robot")],
+    [t("pricing.card.hedge"), t("pricing.preview.hedge")],
     [t("pricing.card.winter"), t("pricing.preview.winter")]
   ];
   const badges = [t("pricing.badge.market"), t("pricing.badge.callout"), t("pricing.badge.savings"), t("pricing.badge.quote")];
@@ -23,7 +23,7 @@ export default function PricingPage() {
         <div className="mb-8 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
           <div>
             <Eyebrow>{t("pricing.eyebrow")}</Eyebrow>
-            <h1 className="text-5xl font-black leading-tight text-forest sm:text-6xl">{t("pricing.title")}</h1>
+            <h1 className="text-4xl font-black leading-tight text-forest sm:text-6xl">{t("pricing.title")}</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-charcoal/70">
               {t("pricing.subtitle")}
             </p>

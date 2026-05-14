@@ -14,7 +14,6 @@ export const customerNav: PortalNavItem[] = [
   { href: "/dashboard/bookings", label: "My Bookings", icon: FileText },
   { href: "/dashboard/history", label: "Service History", icon: Home },
   { href: "/dashboard/contracts", label: "Contracts", icon: ShieldCheck },
-  { href: "/dashboard/robot-rental", label: "Robot Rental", icon: Wrench },
   { href: "/dashboard/invoices", label: "Invoices", icon: FileText },
   { href: "/dashboard/addresses", label: "Addresses", icon: Home },
   { href: "/dashboard/support", label: "Support", icon: MessageSquare },
@@ -29,7 +28,6 @@ export const adminNav: PortalNavItem[] = [
   { href: "/admin/employees", label: "Employees", icon: Users },
   { href: "/admin/contracts", label: "Contracts", icon: ShieldCheck },
   { href: "/admin/invoices", label: "Invoices", icon: FileText },
-  { href: "/admin/robot-rentals", label: "Robot Rentals", icon: Wrench },
   { href: "/admin/equipment", label: "Equipment", icon: Wrench },
   { href: "/admin/services", label: "Services", icon: FileText },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
@@ -46,19 +44,19 @@ export const employeeNav: PortalNavItem[] = [
 
 export function PortalShell({ title, subtitle, profile, nav, children }: { title: string; subtitle: string; profile: UserProfile; nav: PortalNavItem[]; children: React.ReactNode }) {
   return (
-    <section className="bg-cream px-4 py-8 sm:px-6 lg:px-8">
+    <section className="bg-cream px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_1fr]">
-        <aside className="rounded-[30px] bg-forest p-4 text-white shadow-premium lg:sticky lg:top-24 lg:self-start">
+        <aside className="rounded-[24px] bg-forest p-4 text-white shadow-premium sm:rounded-[30px] lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-3xl bg-white/10 p-4">
             <p className="text-xs font-black uppercase tracking-[0.18em] text-lime">LuxLawn Care</p>
             <p className="mt-2 text-lg font-black">{profile.first_name || "Account"} {profile.last_name || ""}</p>
             <p className="text-sm text-white/65">{profile.email}</p>
           </div>
-          <nav className="mt-4 grid gap-2" aria-label={`${title} navigation`}>
+          <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:grid lg:overflow-visible lg:pb-0" aria-label={`${title} navigation`}>
             {nav.map((item) => {
               const Icon = item.icon;
               return (
-                <Link key={item.href} href={item.href} className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-black text-white/78 transition hover:bg-white/10 hover:text-white">
+                <Link key={item.href} href={item.href} className="flex min-w-fit items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 text-sm font-black text-white/88 transition hover:bg-white/15 hover:text-white lg:bg-transparent">
                   {Icon && <Icon className="h-4 w-4 text-lime" />} {item.label}
                 </Link>
               );
@@ -66,9 +64,9 @@ export function PortalShell({ title, subtitle, profile, nav, children }: { title
           </nav>
         </aside>
         <div>
-          <div className="mb-6 rounded-[30px] bg-white p-6 shadow-sm">
+          <div className="mb-6 rounded-[24px] bg-white p-5 shadow-sm sm:rounded-[30px] sm:p-6">
             <p className="text-sm font-black uppercase tracking-[0.18em] text-fresh">{title}</p>
-            <h1 className="mt-2 text-4xl font-black text-forest">{subtitle}</h1>
+            <h1 className="mt-2 text-3xl font-black text-forest sm:text-4xl">{subtitle}</h1>
           </div>
           {children}
         </div>

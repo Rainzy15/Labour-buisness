@@ -12,6 +12,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -19,6 +20,14 @@ body {
   background: #f7f4ea;
   color: #1f2933;
   font-family: Manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 ::selection {
@@ -49,6 +58,7 @@ body {
 
 .range {
   accent-color: #5dbb63;
+  min-height: 44px;
 }
 
 .season-orb {
@@ -57,6 +67,12 @@ body {
   filter: blur(18px);
   opacity: .28;
   animation: float 11s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .season-orb {
+    display: none;
+  }
 }
 
 @keyframes float {

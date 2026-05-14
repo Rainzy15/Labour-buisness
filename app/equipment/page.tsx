@@ -5,8 +5,7 @@ const groups = [
   ["Lawn care tools", ["Lawn mower", "Strimmer / edge trimmer", "Blower and rake", "Green waste bags"]],
   ["Hedge care tools", ["Hedge trimmer", "Ladder", "Safety gloves", "Protective eyewear"]],
   ["Pressure washing tools", ["Pressure washer", "Surface cleaner attachment", "Eco cleaning option"]],
-  ["Winter tools", ["Snow shovel and salt spreader", "De-icing salt", "Safety equipment"]],
-  ["Robot mower rental equipment", ["Robot mower kit", "Charging station", "Boundary/GPS setup", "Spare blades", "App setup support"]]
+  ["Winter tools", ["Snow shovel and salt spreader", "De-icing salt", "Safety equipment"]]
 ];
 
 export default function EquipmentPage() {
@@ -15,8 +14,8 @@ export default function EquipmentPage() {
       <Container>
         <div className="mb-10 max-w-3xl">
           <Eyebrow>Professional tools</Eyebrow>
-          <h1 className="text-5xl font-black text-forest">Equipment We Use</h1>
-          <p className="mt-4 text-lg leading-8 text-charcoal/70">Practical, reliable equipment for clean finishes across lawn care, hedges, terrace cleaning, winter visits, and robot mower rental.</p>
+          <h1 className="text-4xl font-black text-forest sm:text-5xl">Equipment We Use</h1>
+          <p className="mt-4 text-lg leading-8 text-charcoal/70">Practical, reliable equipment for clean finishes across lawn care, hedges, terrace cleaning, and winter visits.</p>
         </div>
         <div className="mb-10 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {groups.map(([title, items]: any) => (

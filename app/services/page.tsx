@@ -7,7 +7,7 @@ export default function ServicesPage() {
       <Container>
         <div className="mb-10 max-w-3xl">
           <Eyebrow>Season by season</Eyebrow>
-          <h1 className="text-5xl font-black text-forest">Services for Every Season</h1>
+          <h1 className="text-4xl font-black text-forest sm:text-5xl">Services for Every Season</h1>
           <p className="mt-4 text-lg leading-8 text-charcoal/70">Garden needs change throughout the year, so our services are organized by season for clear planning and fair pricing.</p>
         </div>
         <div className="grid gap-12">

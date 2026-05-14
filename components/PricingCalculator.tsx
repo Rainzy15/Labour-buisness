@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, Clock, Leaf, Scissors, Snowflake, Sprout, Waves } from "lucide-react";
+import { Clock, Leaf, Scissors, Snowflake, Sprout, Waves } from "lucide-react";
 import {
   calculateHedge,
   calculateHourly,
   calculateLawn,
   calculateLeaves,
   calculatePressure,
-  calculateRobot,
   calculateWinter,
   Estimate
 } from "@/lib/pricing";
@@ -19,18 +18,16 @@ import {
   MobileStickyEstimateBar,
   PremiumSlider,
   QuoteBasket,
-  RobotRentalComparison,
   ServiceTabCard
 } from "@/components/pricing/PricingUi";
 
-type Tab = "lawn" | "hedges" | "leaves" | "pressure" | "winter" | "hourly" | "robot";
+type Tab = "lawn" | "hedges" | "leaves" | "pressure" | "winter" | "hourly";
 type LawnState = Parameters<typeof calculateLawn>[0];
 type HedgeState = Parameters<typeof calculateHedge>[0];
 type LeavesState = Parameters<typeof calculateLeaves>[0];
 type PressureState = Parameters<typeof calculatePressure>[0];
 type WinterState = Parameters<typeof calculateWinter>[0];
 type HourlyState = Parameters<typeof calculateHourly>[0];
-type RobotState = Parameters<typeof calculateRobot>[0];
 
 const tabs: Array<{ id: Tab; label: string; price: string; icon: React.ComponentType<{ className?: string }> }> = [
   { id: "lawn", label: "Lawn", price: "from €27.50", icon: Sprout },
@@ -38,8 +35,7 @@ const tabs: Array<{ id: Tab; label: string; price: string; icon: React.Component
   { id: "leaves", label: "Leaves", price: "from €25", icon: Leaf },
   { id: "pressure", label: "Pressure", price: "from €42.50", icon: Waves },
   { id: "winter", label: "Winter", price: "from €69.50/mo", icon: Snowflake },
-  { id: "hourly", label: "Hourly", price: "from €27.50/h", icon: Clock },
-  { id: "robot", label: "Robot", price: "from €39.50/mo", icon: Bot }
+  { id: "hourly", label: "Hourly", price: "from €27.50/h", icon: Clock }
 ];
 
 export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab }) {
@@ -51,7 +47,6 @@ export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab })
   const [pressure, setPressure] = useState<PressureState>({ area: 35, surface: "terrace", dirt: "normalDirt", treatment: false, water: "available", drainage: "easy" });
   const [winter, setWinter] = useState<WinterState>({ area: 60, service: "combined", timing: "planned", property: "driveway", contract: "standby" });
   const [hourly, setHourly] = useState<HourlyState>({ hours: 2, workers: 1, service: "weeding", waste: false, materials: false });
-  const [robot, setRobot] = useState<RobotState>({ size: 450, duration: "sixMonths", setup: "assisted", maintenance: "midSeason", delivery: "mid", deposit: true, storage: false });
 
   const estimate = useMemo(() => {
     if (tab === "lawn") return calculateLawn(lawn);
@@ -59,9 +54,8 @@ export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab })
     if (tab === "leaves") return calculateLeaves(leaves);
     if (tab === "pressure") return calculatePressure(pressure);
     if (tab === "winter") return calculateWinter(winter);
-    if (tab === "hourly") return calculateHourly(hourly);
-    return calculateRobot(robot);
-  }, [tab, lawn, hedge, leaves, pressure, winter, hourly, robot]);
+    return calculateHourly(hourly);
+  }, [tab, lawn, hedge, leaves, pressure, winter, hourly]);
 
   function addEstimate() {
     setBasket((items) => [...items, { ...estimate, id: `${estimate.id}-${Date.now()}` }]);
@@ -71,12 +65,12 @@ export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab })
     <>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_410px]">
         <div className="min-w-0">
-          <div className="mb-5 flex gap-3 overflow-x-auto pb-3">
+          <div className="mb-5 flex gap-3 overflow-x-auto pb-3 [-webkit-overflow-scrolling:touch]">
             {tabs.map((item) => (
               <ServiceTabCard key={item.id} active={tab === item.id} icon={item.icon} label={item.label} price={item.price} onClick={() => setTab(item.id)} />
             ))}
           </div>
-          <div className="rounded-[34px] bg-white p-5 shadow-premium sm:p-6">
+          <div className="rounded-[26px] bg-white p-4 shadow-premium sm:rounded-[34px] sm:p-6">
             <AnimatePresence mode="wait">
               <motion.div key={tab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.24 }} className="grid gap-5">
                 {tab === "lawn" && <LawnControls lawn={lawn} setLawn={setLawn} />}
@@ -85,8 +79,6 @@ export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab })
                 {tab === "pressure" && <PressureControls pressure={pressure} setPressure={setPressure} />}
                 {tab === "winter" && <WinterControls winter={winter} setWinter={setWinter} />}
                 {tab === "hourly" && <HourlyControls hourly={hourly} setHourly={setHourly} />}
-                {tab === "robot" && <RobotControls robot={robot} setRobot={setRobot} />}
-                {tab === "robot" && <RobotRentalComparison estimate={estimate} />}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -102,24 +94,6 @@ export function PricingCalculator({ initialTab = "lawn" }: { initialTab?: Tab })
         <QuoteBasket items={basket} onRemove={(index) => setBasket((items) => items.filter((_, itemIndex) => itemIndex !== index))} />
       </div>
       <MobileStickyEstimateBar estimate={estimate} onAdd={addEstimate} />
-    </>
-  );
-}
-
-export function RobotControls({ robot, setRobot }: { robot: RobotState; setRobot: (value: RobotState) => void }) {
-  return (
-    <>
-      <PremiumSlider label="Lawn size" value={robot.size} min={100} max={1200} suffix="m²" helper="Under 300 m² = Small, 301-600 m² = Medium, 601-1000 m² = Large." onChange={(size) => setRobot({ ...robot, size })} />
-      <Grid>
-        <Choice label="Rental duration" value={robot.duration} onChange={(duration) => setRobot({ ...robot, duration })} options={[["oneMonth", "1 month"], ["threeMonths", "3 months"], ["sixMonths", "6 months full season"], ["eightMonths", "8 months extended season"]]} />
-        <Choice label="Setup option" value={robot.setup} onChange={(setup) => setRobot({ ...robot, setup })} options={[["diy", "DIY setup"], ["assisted", "Assisted setup"], ["full", "Full setup"]]} />
-        <Choice label="Maintenance check" value={robot.maintenance} onChange={(maintenance) => setRobot({ ...robot, maintenance })} options={[["none", "None"], ["monthly", "Monthly check"], ["midSeason", "Mid-season check"]]} />
-        <Choice label="Delivery distance" value={robot.delivery} onChange={(delivery) => setRobot({ ...robot, delivery })} options={[["near", "0-10 km"], ["mid", "10-25 km"], ["far", "25km+"]]} />
-      </Grid>
-      <ToggleGrid>
-        <Toggle checked={robot.deposit} onChange={(deposit) => setRobot({ ...robot, deposit })} label="Show refundable €100 deposit" />
-        <Toggle checked={robot.storage} onChange={(storage) => setRobot({ ...robot, storage })} label="Optional winter storage" />
-      </ToggleGrid>
     </>
   );
 }
@@ -234,5 +208,5 @@ function Choice<T extends string>({ label, value, onChange, options }: { label: 
   );
 }
 
-const Grid = ({ children }: { children: React.ReactNode }) => <div className="grid gap-4 md:grid-cols-2">{children}</div>;
-const ToggleGrid = ({ children }: { children: React.ReactNode }) => <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{children}</div>;
+const Grid = ({ children }: { children: React.ReactNode }) => <div className="grid gap-4 sm:grid-cols-2">{children}</div>;
+const ToggleGrid = ({ children }: { children: React.ReactNode }) => <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{children}</div>;

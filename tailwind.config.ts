@@ -20,8 +20,8 @@ const config: Config = {
       backgroundImage: {
         grass:
           "linear-gradient(135deg, rgba(18,61,42,.72), rgba(18,61,42,.42)), url('https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1800&q=85')",
-        robot:
-          "linear-gradient(135deg, rgba(18,61,42,.82), rgba(18,61,42,.32)), url('https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=1800&q=85')"
+        hedge:
+          "linear-gradient(135deg, rgba(18,61,42,.82), rgba(18,61,42,.32)), url('https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=1800&q=85')"
       }
     }
   },

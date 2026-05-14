@@ -1,12 +1,10 @@
 import {
   BadgeCheck,
-  Bike,
   CalendarDays,
   Droplets,
   Flower2,
   Home,
   Leaf,
-  MapPin,
   Shovel,
   Snowflake,
   Sparkles,
@@ -20,7 +18,6 @@ export const navItems = [
   { href: "/services", label: "Services" },
   { href: "/pricing", label: "Pricing" },
   { href: "/bundles", label: "Bundles" },
-  { href: "/robot-mower-rental", label: "Robot Rental" },
   { href: "/equipment", label: "Equipment" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
@@ -164,12 +161,12 @@ export const bundles = [
     savings: "up to 10%"
   },
   {
-    name: "Robot Mower Season Bundle",
-    bestFor: "Trying automatic mowing before buying.",
-    includes: ["Robot mower rental", "Assisted setup", "Mid-season check", "Optional winter storage"],
-    frequency: "Seasonal rental",
-    price: "from €199.50/season",
-    savings: "vs. €1000 upfront"
+    name: "Monthly Garden Maintenance Bundle",
+    bestFor: "Busy homeowners who want steady outdoor help.",
+    includes: ["Monthly garden tidy-up", "Weeding support", "Seasonal light pruning", "Green waste discount"],
+    frequency: "Monthly plan",
+    price: "from €149/month",
+    savings: "up to 12%"
   }
 ];
 
@@ -179,8 +176,7 @@ export const equipment = [
   ["Blower and rake", "Fast leaf clearing and tidy final passes.", ["Leaves", "Clean-up"], "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80"],
   ["Hedge trimmer", "Neat seasonal hedge shaping with clean lines.", ["Hedges"], "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=900&q=80"],
   ["Pressure washer", "Terraces, stone paths, driveways, and patios.", ["Pressure washing"], "https://images.unsplash.com/photo-1603708900766-2263a6b0d6ad?auto=format&fit=crop&w=900&q=80"],
-  ["Snow shovel and salt spreader", "Practical winter access clearing and salting.", ["Winter"], "https://images.unsplash.com/photo-1608315398428-c6d76804838d?auto=format&fit=crop&w=900&q=80"],
-  ["Robot mower kit", "Robot mower, charging station, spare blades, and setup support.", ["Robot rental"], "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&w=900&q=80"]
+  ["Snow shovel and salt spreader", "Practical winter access clearing and salting.", ["Winter"], "https://images.unsplash.com/photo-1608315398428-c6d76804838d?auto=format&fit=crop&w=900&q=80"]
 ];
 
 export const faqs = {
@@ -199,12 +195,6 @@ export const faqs = {
     ["Do you offer emergency snow clearing?", "Yes, where availability allows. Same-day and early morning visits include urgency multipliers."],
     ["Is salting included?", "Salting can be booked alone or combined with snow clearing."],
     ["Do you serve private homes and residences?", "Yes. The service is suitable for homes, residences, small offices, and landlords."]
-  ],
-  "Robot Rental": [
-    ["Is setup included?", "DIY setup is included in the base rental. Assisted or full setup can be added."],
-    ["Is there a deposit?", "Yes, the placeholder deposit is €100 and is shown separately from the service price."],
-    ["What lawn size works best?", "The rental calculator supports lawns from 100-1000 m²."],
-    ["Can I rent only for one month?", "Yes. Longer rentals receive seasonal discounts."]
   ]
 };
 
@@ -219,20 +209,12 @@ export const imageAlt = {
   hedge: "Trimmed garden hedge in a residential property",
   leaves: "Autumn leaves being cleared from a garden",
   pressure: "Clean terrace after pressure washing",
-  snow: "Snow clearing on a driveway",
-  robot: "Robot lawn mower working on green grass"
+  snow: "Snow clearing on a driveway"
 };
 
 export const quickStats = [
   ["Typical lawn visit", "from €27.50"],
-  ["Robot mower rental", "from €39.50/month"],
+  ["Hedge trimming", "from €32.50"],
+  ["Pressure washing", "from €42.50"],
   ["Winter salting", "from €19/visit"]
-];
-
-export const process = [
-  ["Choose lawn size", MapPin],
-  ["Select rental duration", CalendarDays],
-  ["Choose setup option", BadgeCheck],
-  ["We deliver / install", Bike],
-  ["You enjoy automatic mowing", Sparkles]
 ];

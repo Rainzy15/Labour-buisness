@@ -14,7 +14,7 @@ export const mockCustomers = [
 export const mockEmployees = [
   { id: "EM-11", name: "Mia Hoffmann", skills: "Mowing, hedges", status: "active", jobs: 18, rating: "4.8" },
   { id: "EM-12", name: "Leo Schmit", skills: "Pressure washing, winter", status: "active", jobs: 14, rating: "4.7" },
-  { id: "EM-13", name: "Noah Ferreira", skills: "Robot setup, mowing", status: "active", jobs: 9, rating: "4.9" }
+  { id: "EM-13", name: "Noah Ferreira", skills: "Mowing, garden tidy-up", status: "active", jobs: 9, rating: "4.9" }
 ];
 
 export const mockContracts = [
@@ -31,11 +31,5 @@ export const mockInvoices = [
 export const mockEquipment = [
   { name: "Honda lawn mower", type: "Lawn mower", status: "available", note: "Ready" },
   { name: "Karcher K7", type: "Pressure washer", status: "maintenance", note: "Hose check" },
-  { name: "Robot mower A", type: "Robot mower", status: "in_use", note: "Rental active" },
   { name: "Salt spreader", type: "Winter", status: "available", note: "Stored" }
-];
-
-export const mockRobotRentals = [
-  { id: "RR-700", customer: "Sofia Ribeiro", plan: "Medium", monthly: "€49.50", status: "active", deposit: "held" },
-  { id: "RR-701", customer: "Tom Weber", plan: "Small", monthly: "€39.50", status: "requested", deposit: "pending" }
 ];

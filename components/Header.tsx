@@ -13,7 +13,6 @@ const primaryNav = [
   { href: "/services", labelKey: "nav.services" },
   { href: "/pricing", labelKey: "nav.pricing" },
   { href: "/bundles", labelKey: "nav.bundles" },
-  { href: "/robot-mower-rental", labelKey: "nav.robot" },
   { href: "/about", labelKey: "nav.about" }
 ];
 
@@ -23,7 +22,6 @@ const serviceLinks = [
   { href: "/services#autumn-services", labelKey: "services.leaves" },
   { href: "/services#autumn-services", labelKey: "services.pressure" },
   { href: "/services#winter-services", labelKey: "services.winter" },
-  { href: "/robot-mower-rental", labelKey: "services.robot" },
   { href: "/equipment", labelKey: "nav.equipment" }
 ];
 
@@ -114,10 +112,10 @@ export function Header() {
 
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }} className="border-t border-forest/10 bg-[#FAF7EF] px-4 py-4 lg:hidden">
-            <div className="mx-auto grid max-w-7xl gap-2">
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }} className="fixed inset-x-0 top-[76px] max-h-[calc(100dvh-76px)] overflow-y-auto border-t border-forest/10 bg-[#FAF7EF] px-4 py-4 shadow-premium lg:hidden">
+            <div className="mx-auto grid max-w-7xl gap-3">
               {mobileLinks.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="rounded-2xl bg-white px-4 py-3 text-sm font-bold text-forest">
+                <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="min-h-12 rounded-2xl bg-white px-4 py-3 text-base font-bold text-forest">
                   {t(item.labelKey)}
                 </Link>
               ))}
@@ -128,7 +126,7 @@ export function Header() {
                     <option value="en">English</option>
                     <option value="fr">Français</option>
                     <option value="de">Deutsch</option>
-                    <option value="lu">Lëtzebuergesch</option>
+                    <option value="lb">Lëtzebuergesch</option>
                   </select>
                 </label>
               </div>

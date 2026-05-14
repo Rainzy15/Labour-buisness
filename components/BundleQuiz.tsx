@@ -8,7 +8,7 @@ const map: Record<string, string> = {
   "Winter safety": "Winter Safety Bundle",
   "Autumn leaves": "Autumn Clean-Up Bundle",
   "Full garden care": "Full Garden Summer Bundle",
-  "Try robot mowing": "Robot Mower Season Bundle"
+  "Monthly help": "Monthly Garden Maintenance Bundle"
 };
 
 export function BundleQuiz() {

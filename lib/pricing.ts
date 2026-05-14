@@ -72,21 +72,6 @@ export const PRICING = {
     secondWorkerMultiplier: 2,
     wasteRemoval: 15,
     plantingHandlingFee: 10
-  },
-  robotRental: {
-    smallMonthly: 39.5,
-    mediumMonthly: 49.5,
-    largeMonthly: 64.5,
-    assistedSetup: 49.5,
-    fullSetup: 124.5,
-    delivery0to10km: 0,
-    delivery10to25km: 12.5,
-    delivery25kmPlus: 22.5,
-    monthlyMaintenance: 14.5,
-    midSeasonCheck: 29.5,
-    winterStorage: 24.5,
-    refundableDeposit: 100,
-    durationDiscounts: { oneMonth: 0, threeMonths: 0.05, sixMonths: 0.12, eightMonths: 0.15 }
   }
 } as const;
 
@@ -96,7 +81,7 @@ export type EstimateCadence = "one-time" | "per-visit" | "monthly" | "season";
 export type Estimate = {
   id: string;
   name: string;
-  category: "lawn" | "hedge" | "leaves" | "pressure" | "winter" | "hourly" | "robot";
+  category: "lawn" | "hedge" | "leaves" | "pressure" | "winter" | "hourly";
   total: number;
   cadence: EstimateCadence;
   perVisit?: number;
@@ -368,54 +353,6 @@ export function calculateHourly(input: {
       { label: "Labour", amount: base, kind: "base" },
       { label: "Waste removal", amount: waste, kind: "addon" },
       { label: "Materials handling", amount: materials, kind: "addon" }
-    ]
-  } satisfies Estimate;
-}
-
-export function calculateRobot(input: {
-  size: number;
-  duration: "oneMonth" | "threeMonths" | "sixMonths" | "eightMonths";
-  setup: "diy" | "assisted" | "full";
-  maintenance: "none" | "monthly" | "midSeason";
-  delivery: "near" | "mid" | "far";
-  deposit: boolean;
-  storage: boolean;
-}) {
-  const p = PRICING.robotRental;
-  const months = input.duration === "oneMonth" ? 1 : input.duration === "threeMonths" ? 3 : input.duration === "sixMonths" ? 6 : 8;
-  const custom = input.size > 1000;
-  const monthly = input.size <= 300 ? p.smallMonthly : input.size <= 600 ? p.mediumMonthly : p.largeMonthly;
-  const plan = input.size <= 300 ? "Small Plan" : input.size <= 600 ? "Medium Plan" : input.size <= 1000 ? "Large Plan" : "Custom quote";
-  const grossRental = monthly * months;
-  const discount = grossRental * p.durationDiscounts[input.duration];
-  const rental = grossRental - discount;
-  const setup = input.setup === "assisted" ? p.assistedSetup : input.setup === "full" ? p.fullSetup : 0;
-  const delivery = input.delivery === "mid" ? p.delivery10to25km : input.delivery === "far" ? p.delivery25kmPlus : p.delivery0to10km;
-  const maintenance = input.maintenance === "monthly" ? p.monthlyMaintenance * months : input.maintenance === "midSeason" ? p.midSeasonCheck : 0;
-  const storage = input.storage ? p.winterStorage : 0;
-  const total = rental + setup + delivery + maintenance + storage;
-
-  return {
-    id: "robot",
-    name: "Robot mower rental",
-    category: "robot",
-    total,
-    monthly,
-    deposit: input.deposit ? p.refundableDeposit : undefined,
-    cadence: "season",
-    savings: 1000 - total,
-    confidence: custom ? "Needs confirmation" : "High",
-    included: [plan, `${months} month rental`, input.setup === "diy" ? "DIY setup guidance" : input.setup === "assisted" ? "Assisted setup" : "Full setup"],
-    mayChange: ["Boundary complexity", "Slope", "Very uneven lawn", "Damage/theft deposit conditions"],
-    recommendation: "Rental avoids a €1000+ upfront robot mower purchase, storage, and setup uncertainty.",
-    warnings: custom ? ["Lawns over 1000 m² need a custom robot mower quote."] : undefined,
-    breakdown: [
-      { label: "Rental period", amount: rental, kind: "base" },
-      { label: "Setup", amount: setup, kind: "addon" },
-      { label: "Delivery", amount: delivery, kind: "addon" },
-      { label: "Maintenance", amount: maintenance, kind: "addon" },
-      { label: "Winter storage", amount: storage, kind: "addon" },
-      { label: "Duration discount", amount: -discount, kind: "discount" }
     ]
   } satisfies Estimate;
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarDays, FileText, Leaf, Wrench } from "lucide-react";
+import { CalendarDays, FileText, Leaf, Scissors } from "lucide-react";
 import { StatCard } from "@/components/portal/PortalShell";
 import { requireProfile } from "@/lib/auth/server";
 import { getCustomerDashboardData } from "@/lib/dashboardData";
@@ -22,7 +22,7 @@ export default async function DashboardPage() {
         {[
           ["/dashboard/book", "Book new service", CalendarDays],
           ["/dashboard/bookings", "View bookings", FileText],
-          ["/dashboard/robot-rental", "Rent robot mower", Wrench],
+          ["/bundles", "View care bundles", Scissors],
           ["/dashboard/support", "Contact support", Leaf]
         ].map(([href, label, Icon]: any) => (
           <Link key={href} href={href} className="rounded-[26px] bg-white p-6 font-black text-forest shadow-sm transition hover:-translate-y-1 hover:shadow-premium">

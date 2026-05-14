@@ -47,7 +47,6 @@ function navKeyForHref(href: string) {
     "/services": "nav.services",
     "/pricing": "nav.pricing",
     "/bundles": "nav.bundles",
-    "/robot-mower-rental": "nav.robot",
     "/equipment": "nav.equipment",
     "/about": "nav.about",
     "/faq": "nav.faq",

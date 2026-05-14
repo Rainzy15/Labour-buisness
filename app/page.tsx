@@ -14,7 +14,7 @@ export default function HomePage() {
       <QuickEstimate />
       <div className="grass-divider" />
       <SeasonalServices />
-      <RobotTeaser />
+      <PropertyCareTeaser />
       <BundlesPreview />
       <BeforeAfter />
       <Testimonials />
@@ -34,14 +34,14 @@ export default function HomePage() {
 
 function Hero() {
   return (
-    <section className="relative min-h-[86vh] overflow-hidden bg-grass bg-cover bg-center px-4 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative min-h-[86vh] overflow-hidden bg-grass bg-cover bg-center px-4 py-14 text-white sm:px-6 sm:py-20 lg:px-8">
       <span className="season-orb left-10 top-24 h-40 w-40 bg-lime" />
       <span className="season-orb bottom-24 right-24 h-56 w-56 bg-fresh" />
       <Container className="grid min-h-[68vh] items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">
         <div>
           <p className="mb-4 inline-flex rounded-full bg-white/18 px-4 py-2 text-sm font-extrabold backdrop-blur">Local Luxembourg garden service</p>
-          <h1 className="max-w-4xl text-5xl font-black leading-[1.02] sm:text-7xl">Smart Lawn & Seasonal Garden Care in Luxembourg</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82">From weekly mowing to winter salting and robot mower rental, get transparent estimates in seconds.</p>
+          <h1 className="max-w-4xl text-4xl font-black leading-[1.05] sm:text-6xl lg:text-7xl">Smart Lawn & Seasonal Garden Care in Luxembourg</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82">From weekly mowing to hedge care, pressure washing, winter salting, and seasonal garden maintenance, get transparent estimates in seconds.</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/pricing" variant="secondary">Calculate my price</ButtonLink>
             <ButtonLink href="/services" variant="ghost">Explore services</ButtonLink>
@@ -97,7 +97,7 @@ function QuickEstimate() {
         <div className="grid gap-8 rounded-[36px] bg-white p-6 shadow-premium lg:grid-cols-[.8fr_1.2fr] lg:p-8">
           <div>
             <Eyebrow>Quick Estimate</Eyebrow>
-            <h2 className="text-4xl font-black text-forest">A realistic price in a few seconds.</h2>
+            <h2 className="text-3xl font-black text-forest sm:text-4xl">A realistic price in a few seconds.</h2>
             <p className="mt-4 text-charcoal/70">Choose your service, adjust the sliders, and get a realistic estimate instantly.</p>
           </div>
           <div className="grid gap-4">
@@ -110,13 +110,13 @@ function QuickEstimate() {
                 {["Spring", "Summer", "Autumn", "Winter"].map((s) => <option key={s}>{s}</option>)}
               </Select>
               <Select value={service} onChange={(e) => setService(e.target.value)} aria-label="Service">
-                {["Lawn care", "Hedge care", "Leaf clearing", "Pressure washing", "Snow clearing", "Robot rental"].map((s) => <option key={s}>{s}</option>)}
+                {["Lawn care", "Hedge care", "Leaf clearing", "Pressure washing", "Snow clearing", "Garden maintenance"].map((s) => <option key={s}>{s}</option>)}
               </Select>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-forest p-5 text-white">
               <div>
                 <p className="text-sm text-white/70">Estimated visit price</p>
-                <p className="text-4xl font-black">{eur(estimate.total)}</p>
+                <p className="text-3xl font-black sm:text-4xl">{eur(estimate.total)}</p>
               </div>
               <Link href="/pricing" className="rounded-full bg-lime px-5 py-3 text-sm font-black text-forest">Open full pricing calculator</Link>
             </div>
@@ -134,7 +134,7 @@ function SeasonalServices() {
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <Eyebrow>Seasonal Care</Eyebrow>
-            <h2 className="text-4xl font-black text-forest">Four seasons, one tidy garden.</h2>
+            <h2 className="text-3xl font-black text-forest sm:text-4xl">Four seasons, one tidy garden.</h2>
           </div>
           <ButtonLink href="/services">View all services</ButtonLink>
         </div>
@@ -164,23 +164,23 @@ function SeasonalServices() {
   );
 }
 
-function RobotTeaser() {
+function PropertyCareTeaser() {
   return (
     <Section className="bg-white">
       <Container className="grid gap-8 lg:grid-cols-2 lg:items-center">
-        <div className="overflow-hidden rounded-[36px] bg-robot bg-cover bg-center p-8 text-white shadow-premium">
+        <div className="overflow-hidden rounded-[36px] bg-hedge bg-cover bg-center p-8 text-white shadow-premium">
           <div className="min-h-[420px]" />
         </div>
         <div>
-          <Eyebrow>Robot Mower Rental</Eyebrow>
-          <h2 className="text-4xl font-black text-forest">Rent the perfect lawn instead of buying the machine.</h2>
-          <p className="mt-4 text-charcoal/70">Use a robot mower for the mowing season with lower upfront cost, optional setup, and practical maintenance checks.</p>
+          <Eyebrow>Full property care</Eyebrow>
+          <h2 className="text-3xl font-black text-forest sm:text-4xl">Keep the whole outdoor space neat, not just the lawn.</h2>
+          <p className="mt-4 text-charcoal/70">Combine mowing, hedge care, pressure washing, weeding, and seasonal clean-ups into one clear plan.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {["No storage problem", "Lower upfront cost", "Regular mowing", "Optional setup", "Optional maintenance check"].map((item) => (
+            {["Regular garden visits", "Hedge care add-ons", "Pressure washing", "Green waste support", "Seasonal reminders"].map((item) => (
               <div key={item} className="rounded-2xl bg-cream p-4 font-bold text-forest">{item}</div>
             ))}
           </div>
-          <div className="mt-7"><ButtonLink href="/robot-mower-rental">View robot mower rental</ButtonLink></div>
+          <div className="mt-7"><ButtonLink href="/bundles">View care bundles</ButtonLink></div>
         </div>
       </Container>
     </Section>
@@ -192,7 +192,7 @@ function BundlesPreview() {
     <Section className="bg-cream">
       <Container>
         <Eyebrow>Seasonal bundles</Eyebrow>
-        <h2 className="text-4xl font-black text-forest">Popular care plans.</h2>
+        <h2 className="text-3xl font-black text-forest sm:text-4xl">Popular care plans.</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {bundles.slice(0, 3).map((bundle) => (
             <MotionCard key={bundle.name}>
@@ -215,7 +215,7 @@ function BeforeAfter() {
       <Container className="grid gap-8 lg:grid-cols-2 lg:items-center">
         <div>
           <Eyebrow>Before / After</Eyebrow>
-          <h2 className="text-4xl font-black text-forest">Pressure washing that actually looks finished.</h2>
+          <h2 className="text-3xl font-black text-forest sm:text-4xl">Pressure washing that actually looks finished.</h2>
           <p className="mt-4 text-charcoal/70">A simple visual placeholder for terrace, path, and driveway results.</p>
         </div>
         <div className="grid overflow-hidden rounded-[34px] shadow-premium sm:grid-cols-2">
@@ -232,7 +232,7 @@ function Testimonials() {
     <Section className="bg-cream">
       <Container>
         <Eyebrow>Client notes</Eyebrow>
-        <h2 className="text-4xl font-black text-forest">Trusted by local homes and landlords.</h2>
+        <h2 className="text-3xl font-black text-forest sm:text-4xl">Trusted by local homes and landlords.</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {testimonials.map(([name, place, quote]) => (
             <MotionCard key={name}>

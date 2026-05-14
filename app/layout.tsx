@@ -10,7 +10,7 @@ import { LanguageProvider } from "@/components/language/LanguageProvider";
 export const metadata: Metadata = {
   title: "LuxLawn Care | Lawn Mowing & Garden Services Luxembourg",
   description:
-    "Transparent lawn mowing, hedge care, pressure washing, winter salting, and robot mower rental in Luxembourg."
+    "Transparent lawn mowing, hedge care, pressure washing, winter salting, and seasonal garden maintenance in Luxembourg."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

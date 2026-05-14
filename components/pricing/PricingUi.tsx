@@ -35,13 +35,13 @@ export function PremiumSlider({
 }) {
   const percentage = ((value - min) / (max - min)) * 100;
   return (
-    <div className="rounded-[26px] border border-forest/10 bg-white p-5 shadow-sm">
-      <div className="mb-3 flex items-start justify-between gap-4">
+    <div className="rounded-[22px] border border-forest/10 bg-white p-4 shadow-sm sm:rounded-[26px] sm:p-5">
+      <div className="mb-3 grid gap-2 sm:flex sm:items-start sm:justify-between sm:gap-4">
         <div>
           <label className="text-sm font-black text-forest">{label}</label>
           {helper && <p className="mt-1 text-xs font-bold text-charcoal/55">{helper}</p>}
         </div>
-        <span className="rounded-full bg-lime px-3 py-1 text-sm font-black text-forest">
+        <span className="w-fit rounded-full bg-lime px-3 py-1 text-sm font-black text-forest">
           {value} {suffix}
         </span>
       </div>
@@ -81,7 +81,7 @@ export function ServiceTabCard({
   return (
     <button
       onClick={onClick}
-      className={`relative min-w-[150px] rounded-[24px] border p-4 text-left transition ${active ? "border-fresh bg-forest text-white shadow-premium" : "border-forest/10 bg-white text-forest hover:-translate-y-1 hover:shadow-glass"}`}
+      className={`relative min-w-[132px] rounded-[22px] border p-3 text-left transition sm:min-w-[150px] sm:rounded-[24px] sm:p-4 ${active ? "border-fresh bg-forest text-white shadow-premium" : "border-forest/10 bg-white text-forest hover:-translate-y-1 hover:shadow-glass"}`}
     >
       {active && <motion.span layoutId="activePricingTab" className="absolute inset-0 rounded-[24px] bg-fresh/10" />}
       <span className="relative z-10 grid gap-3">
@@ -133,12 +133,10 @@ export function BundleSuggestion({ basket }: { basket: Estimate[] }) {
   const ids = basket.map((item) => item.category);
   const suggestion = ids.includes("lawn") && ids.includes("hedge")
     ? "Summer Garden Bundle: lawn + hedge + waste removal can save up to 15%."
-    : ids.includes("leaves") && ids.includes("hedge") && ids.includes("pressure")
-      ? "Autumn Clean-Up Bundle: leaves + hedge + pressure washing can save up to 10%."
-      : ids.includes("winter")
-        ? "Winter Safety Bundle: snow clearing + salting starts from €69.50/month."
-        : ids.includes("robot")
-          ? "Robot Mower Season Bundle: rental + setup + mid-season check from €199.50/season."
+      : ids.includes("leaves") && ids.includes("hedge") && ids.includes("pressure")
+        ? "Autumn Clean-Up Bundle: leaves + hedge + pressure washing can save up to 10%."
+        : ids.includes("winter")
+          ? "Winter Safety Bundle: snow clearing + salting starts from €69.50/month."
           : "Add related services to unlock a bundle recommendation.";
   return <p className="rounded-2xl bg-white/10 p-3 text-sm font-bold text-white/78">{suggestion}</p>;
 }
@@ -149,7 +147,7 @@ export function QuoteBasket({ items, onRemove }: { items: Estimate[]; onRemove: 
   const savings = items.reduce((total, item) => total + (item.savings && item.savings > 0 ? item.savings : 0), 0);
 
   return (
-    <div className="rounded-[30px] bg-forest p-5 text-white shadow-premium">
+    <div className="rounded-[24px] bg-forest p-4 text-white shadow-premium sm:rounded-[30px] sm:p-5">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-black">Quote basket</h2>
@@ -204,16 +202,16 @@ export function LiveEstimateCard({ estimate, onAdd }: { estimate: Estimate; onAd
         ? "Biweekly = 2 visits/month for planning."
         : "Monthly = 1 visit/month."
     : estimate.monthly
-      ? "Monthly contract or rental estimate."
+      ? "Monthly contract estimate."
       : "One-time service estimate.";
 
   return (
-    <div className="rounded-[32px] bg-white p-6 shadow-premium">
+    <div className="rounded-[28px] bg-white p-5 shadow-premium sm:rounded-[32px] sm:p-6">
       <p className="text-sm font-black uppercase tracking-[0.16em] text-fresh">Live estimate</p>
       <h2 className="mt-2 text-2xl font-black text-forest">{estimate.name}</h2>
       <div className="mt-4 rounded-[28px] bg-cream p-5">
         <p className="text-sm font-bold text-charcoal/60">Estimated total</p>
-        <AnimatedNumber value={estimate.total} className="block text-5xl font-black text-forest" />
+        <AnimatedNumber value={estimate.total} className="block text-4xl font-black text-forest sm:text-5xl" />
         {estimate.monthly && estimate.cadence !== "season" && <p className="mt-2 text-sm font-bold text-charcoal/70">{eur(estimate.monthly)} monthly estimate. {monthlyExplanation}</p>}
         {estimate.deposit && <p className="mt-2 text-sm font-bold text-charcoal/70">{eur(estimate.deposit)} refundable deposit shown separately.</p>}
       </div>
@@ -266,16 +264,6 @@ export function MobileStickyEstimateBar({ estimate, onAdd }: { estimate: Estimat
         </div>
         <button onClick={onAdd} className="rounded-full bg-lime px-4 py-3 text-sm font-black text-forest">Add</button>
       </div>
-    </div>
-  );
-}
-
-export function RobotRentalComparison({ estimate }: { estimate: Estimate }) {
-  return (
-    <div className="grid gap-3 rounded-[26px] bg-cream p-5">
-      <div className="flex justify-between gap-4 text-sm"><span>Entry robot mower purchase</span><strong>€1000+</strong></div>
-      <div className="flex justify-between gap-4 text-sm"><span>Selected rental period</span><strong>{eur(estimate.total)}</strong></div>
-      <div className="flex justify-between gap-4 text-sm"><span>Best for</span><strong>Trying before buying</strong></div>
     </div>
   );
 }

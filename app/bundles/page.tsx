@@ -9,8 +9,8 @@ export default function BundlesPage() {
       <Container>
         <div className="mb-10 max-w-3xl">
           <Eyebrow>Seasonal planning</Eyebrow>
-          <h1 className="text-5xl font-black text-forest">Seasonal Care Bundles</h1>
-          <p className="mt-4 text-lg leading-8 text-charcoal/70">Clear plans for lawns, leaves, winter safety, and seasonal robot mower rental.</p>
+          <h1 className="text-4xl font-black text-forest sm:text-5xl">Seasonal Care Bundles</h1>
+          <p className="mt-4 text-lg leading-8 text-charcoal/70">Clear plans for lawns, leaves, winter safety, hedge care, and monthly garden maintenance.</p>
         </div>
         <BundleQuiz />
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">

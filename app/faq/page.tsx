@@ -8,8 +8,8 @@ export default function FaqPage() {
       <Container>
         <div className="mb-10 max-w-3xl">
           <Eyebrow>Answers</Eyebrow>
-          <h1 className="text-5xl font-black text-forest">Frequently Asked Questions</h1>
-          <p className="mt-4 text-lg leading-8 text-charcoal/70">Clear answers for pricing, lawn care, winter visits, and robot mower rental.</p>
+          <h1 className="text-4xl font-black text-forest sm:text-5xl">Frequently Asked Questions</h1>
+          <p className="mt-4 text-lg leading-8 text-charcoal/70">Clear answers for pricing, lawn care, hedge work, winter visits, and bookings.</p>
         </div>
         <FaqAccordion groups={faqs} />
       </Container>

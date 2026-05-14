@@ -9,7 +9,7 @@ export default function AboutPage() {
         <Container className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div>
             <Eyebrow>Luxembourg-based</Eyebrow>
-            <h1 className="text-5xl font-black text-forest">Young, local, and serious about clear garden care.</h1>
+            <h1 className="text-4xl font-black text-forest sm:text-5xl">Young, local, and serious about clear garden care.</h1>
             <p className="mt-5 text-lg leading-8 text-charcoal/70">Garden care in Luxembourg can feel expensive and unclear. LuxLawn Care is built around transparent online estimates, flexible seasonal care, and tidy work that respects your property.</p>
             <div className="mt-7"><ButtonLink href="/contact">Send garden details</ButtonLink></div>
           </div>

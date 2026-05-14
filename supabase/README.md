@@ -20,7 +20,7 @@ Open Supabase SQL Editor and run:
 2. `supabase/migrations/0002_security_linter_hardening.sql`
 3. `supabase/seed.sql`
 
-The schema creates roles, bookings, contracts, invoices, robot rentals, equipment, messages, notifications, audit logs, and RLS policies.
+The schema creates roles, bookings, contracts, invoices, equipment, messages, notifications, audit logs, and RLS policies. The original early-development migration still contains a deprecated robot rental table for non-destructive compatibility, but the frontend no longer uses it.
 
 ## 3. Configure auth providers
 
