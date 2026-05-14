@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { assignEmployeeAction, updateBookingAction } from "@/app/admin/actions";
+import { assignEmployeeAction, deleteBookingAction, updateBookingAction } from "@/app/admin/actions";
 import { StatusBadge } from "@/components/portal/PortalShell";
 import { getAdminBooking, getAdminEmployees } from "@/lib/adminData";
 
@@ -66,6 +66,13 @@ export default async function AdminBookingDetailPage({ params }: { params: { id:
           <Link href="/admin/employees" className="rounded-full bg-cream px-5 py-3 text-center text-sm font-black text-forest">Manage employees</Link>
         </form>
       </div>
+
+      <form action={deleteBookingAction} className="rounded-[28px] border border-red-100 bg-white p-6 shadow-sm">
+        <h3 className="text-2xl font-black text-red-700">Delete old job</h3>
+        <p className="mt-2 text-sm leading-6 text-charcoal/70">This permanently removes the booking and linked assignment records. Use this for test jobs, duplicates, or old records you no longer want in operations.</p>
+        <input type="hidden" name="id" value={booking.id} />
+        <button className="mt-4 rounded-full bg-red-600 px-5 py-3 text-sm font-black text-white">Delete booking permanently</button>
+      </form>
     </div>
   );
 }

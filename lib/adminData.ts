@@ -56,6 +56,41 @@ export type AdminEmployee = {
   job_assignments?: Array<{ id: string; status: string; booking_id: string; completed_at: string | null }>;
 };
 
+export type AdminService = {
+  id: string;
+  name: string;
+  category: string;
+  season: string | null;
+  description: string | null;
+  base_price: number | null;
+  pricing_unit: string | null;
+  active: boolean;
+};
+
+export type AdminAddressOption = {
+  id: string;
+  label: string;
+  street: string;
+  commune: string | null;
+  customer_id: string;
+  customers?: {
+    users_profile?: { email: string; first_name: string | null; last_name: string | null } | null;
+  } | null;
+};
+
+export type AdminEquipment = {
+  id: string;
+  name: string;
+  type: string;
+  brand: string | null;
+  model: string | null;
+  serial_number: string | null;
+  purchase_price: number | null;
+  purchase_date: string | null;
+  status: string;
+  notes: string | null;
+};
+
 export async function getAdminOverviewData() {
   if (!hasSupabaseEnv()) return { bookings: [], customers: [], employees: [], equipment: [], contracts: [], invoices: [] };
   const supabase = createClient();
@@ -158,4 +193,52 @@ export async function getAdminEmployee(id: string): Promise<AdminEmployee | null
   const { data, error } = await supabase.from("employees").select("*, job_assignments(id,status,booking_id,completed_at)").eq("id", id).single();
   if (error) return null;
   return data as AdminEmployee;
+}
+
+export async function getAdminServices(includeInactive = true): Promise<AdminService[]> {
+  if (!hasSupabaseEnv()) return [];
+  const supabase = createClient();
+  let query = supabase.from("services").select("*").order("category").order("name");
+  if (!includeInactive) query = query.eq("active", true);
+  const { data, error } = await query;
+  if (error) {
+    console.error("Admin services query failed", error.message);
+    return [];
+  }
+  return data as AdminService[];
+}
+
+export async function getAdminAddresses(): Promise<AdminAddressOption[]> {
+  if (!hasSupabaseEnv()) return [];
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("addresses")
+    .select("id,label,street,commune,customer_id,customers(users_profile(email,first_name,last_name))")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("Admin addresses query failed", error.message);
+    return [];
+  }
+  return data as AdminAddressOption[];
+}
+
+export async function getAdminEquipment(): Promise<AdminEquipment[]> {
+  if (!hasSupabaseEnv()) return [];
+  const supabase = createClient();
+  const { data, error } = await supabase.from("equipment").select("*").order("name");
+  if (error) {
+    console.error("Admin equipment query failed", error.message);
+    return [];
+  }
+  return data as AdminEquipment[];
+}
+
+export async function getAdminBookingFormData() {
+  const [customers, addresses, services, employees] = await Promise.all([
+    getAdminCustomers(),
+    getAdminAddresses(),
+    getAdminServices(false),
+    getAdminEmployees()
+  ]);
+  return { customers, addresses, services, employees };
 }

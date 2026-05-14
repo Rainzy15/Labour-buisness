@@ -5,6 +5,7 @@ import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
 import de from "@/messages/de.json";
 import lb from "@/messages/lb.json";
+import { phraseTranslations } from "@/messages/phrases";
 
 export type Language = "en" | "fr" | "de" | "lb";
 
@@ -53,7 +54,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     [language]
   );
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+      <DomTranslator language={language} />
+    </LanguageContext.Provider>
+  );
 }
 
 export function useLanguage() {
@@ -62,4 +68,70 @@ export function useLanguage() {
     throw new Error("useLanguage must be used inside LanguageProvider");
   }
   return context;
+}
+
+const textOriginals = new WeakMap<Text, string>();
+const attrOriginals = new WeakMap<Element, Record<string, string>>();
+
+function DomTranslator({ language }: { language: Language }) {
+  useEffect(() => {
+    const translatePage = () => translateNode(document.body, language);
+    translatePage();
+
+    const observer = new MutationObserver(() => translatePage());
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["placeholder", "aria-label", "title"] });
+    return () => observer.disconnect();
+  }, [language]);
+
+  return null;
+}
+
+function translateNode(root: Node, language: Language) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes: Text[] = [];
+  while (walker.nextNode()) {
+    textNodes.push(walker.currentNode as Text);
+  }
+
+  textNodes.forEach((node) => {
+    if (shouldSkip(node.parentElement)) return;
+    if (!textOriginals.has(node)) textOriginals.set(node, node.nodeValue ?? "");
+    const original = textOriginals.get(node) ?? "";
+    node.nodeValue = translateWithWhitespace(original, language);
+  });
+
+  if (root instanceof Element || root instanceof Document || root instanceof DocumentFragment) {
+    const elements = root instanceof Element ? [root, ...Array.from(root.querySelectorAll("*"))] : Array.from((root as Document | DocumentFragment).querySelectorAll("*"));
+    elements.forEach((element) => {
+      if (shouldSkip(element)) return;
+      ["placeholder", "aria-label", "title"].forEach((attr) => {
+        const value = element.getAttribute(attr);
+        if (!value) return;
+        const originals = attrOriginals.get(element) ?? {};
+        if (!originals[attr]) {
+          originals[attr] = value;
+          attrOriginals.set(element, originals);
+        }
+        element.setAttribute(attr, translatePhrase(originals[attr], language));
+      });
+    });
+  }
+}
+
+function shouldSkip(element: Element | null) {
+  if (!element) return true;
+  return Boolean(element.closest("script, style, code, pre, [data-no-translate]"));
+}
+
+function translateWithWhitespace(value: string, language: Language) {
+  const leading = value.match(/^\s*/)?.[0] ?? "";
+  const trailing = value.match(/\s*$/)?.[0] ?? "";
+  const trimmed = value.trim();
+  if (!trimmed) return value;
+  return `${leading}${translatePhrase(trimmed, language)}${trailing}`;
+}
+
+function translatePhrase(value: string, language: Language) {
+  if (language === "en") return value;
+  return phraseTranslations[language][value] ?? dictionaries[language][value] ?? value;
 }
