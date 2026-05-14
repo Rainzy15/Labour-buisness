@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="LuxLawn Care maskable icon">
+  <rect width="512" height="512" fill="#123D2A"/>
+  <circle cx="384" cy="130" r="54" fill="#B7E75A" opacity=".95"/>
+  <path fill="#5DBB63" d="M64 356c78-38 139-40 198-6 61 35 112 29 186-17v112H64z"/>
+  <path fill="#B7E75A" d="M256 96c-42 38-64 82-64 130 0 61 32 108 64 141 32-33 64-80 64-141 0-48-22-92-64-130zm0 82c15 20 23 40 23 61 0 26-9 48-23 67-14-19-23-41-23-67 0-21 8-41 23-61z"/>
+  <path fill="#FFFFFF" d="M144 322c62-101 142-135 239-107-82 15-143 65-180 150-19-15-39-29-59-43z" opacity=".9"/>
+</svg>
