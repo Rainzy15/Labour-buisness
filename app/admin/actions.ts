@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireProfile } from "@/lib/auth/server";
+import { DEFAULT_SERVICES } from "@/lib/defaultServices";
 import { createClient } from "@/lib/supabase/server";
 
 const bookingUpdateSchema = z.object({
@@ -240,6 +241,34 @@ export async function deleteServiceAction(formData: FormData) {
   const supabase = createClient();
   await supabase.from("services").delete().eq("id", parsed.data.id);
   revalidatePath("/admin/services");
+}
+
+export async function restoreDefaultServicesAction() {
+  const profile = await requireProfile(["admin", "manager"]);
+  const supabase = createClient();
+  const { data: existingServices } = await supabase.from("services").select("name");
+  const existingNames = new Set((existingServices ?? []).map((service) => service.name));
+  const missingServices = DEFAULT_SERVICES.filter((service) => !existingNames.has(service.name));
+
+  if (missingServices.length > 0) {
+    await supabase.from("services").insert(
+      missingServices.map((service) => ({
+        ...service,
+        active: true
+      }))
+    );
+  }
+
+  await supabase.from("audit_logs").insert({
+    actor_user_id: profile.id,
+    action: "services.defaults_restored",
+    entity_type: "services",
+    metadata_json: { inserted: missingServices.length }
+  });
+
+  revalidatePath("/admin/services");
+  revalidatePath("/dashboard/book");
+  redirect("/admin/services");
 }
 
 export async function createEquipmentAction(formData: FormData) {

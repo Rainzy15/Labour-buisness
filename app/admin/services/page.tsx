@@ -1,4 +1,4 @@
-import { createServiceAction, deleteServiceAction } from "@/app/admin/actions";
+import { createServiceAction, deleteServiceAction, restoreDefaultServicesAction } from "@/app/admin/actions";
 import { StatusBadge } from "@/components/portal/PortalShell";
 import { getAdminServices } from "@/lib/adminData";
 
@@ -7,6 +7,20 @@ export default async function AdminServicesPage() {
 
   return (
     <div className="grid gap-6">
+      <div className="rounded-[28px] bg-forest p-6 text-white shadow-premium">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-black">Restore LuxLawn default services</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/70">
+              Adds back any missing default services used by the booking builder, including lawn care, hedges, leaves, pressure washing, winter work, and hourly garden maintenance. Existing services are kept.
+            </p>
+          </div>
+          <form action={restoreDefaultServicesAction}>
+            <button className="rounded-full bg-lime px-5 py-3 text-sm font-black text-forest">Restore missing services</button>
+          </form>
+        </div>
+      </div>
+
       <form action={createServiceAction} className="grid gap-4 rounded-[28px] bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-black text-forest">Add service</h2>
         <div className="grid gap-4 md:grid-cols-2">
