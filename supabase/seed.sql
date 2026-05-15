@@ -1,12 +1,12 @@
 insert into public.services (name, category, season, description, base_price, pricing_unit, active)
 select *
 from (values
-  ('Lawn Care', 'lawn', 'Summer', 'Regular mowing, edge trimming, optional grass collection, and tidy finishing.', 27.5, 'visit', true),
-  ('Lawn Restart', 'lawn', 'Spring', 'First mow, edge trim, and light clean-up after winter.', 30, 'visit', true),
-  ('Scarifying / Aeration', 'lawn', 'Spring', 'Seasonal lawn recovery placeholder for deeper spring maintenance.', 45, 'job', true),
-  ('Hedge Care', 'hedge', 'Summer', 'Hedge trimming, shape correction, and clean finishing.', 32.5, 'job', true),
-  ('Hedge Pre-Winter Trim', 'hedge', 'Autumn', 'Final hedge shaping before winter growth slows down.', 32.5, 'job', true),
-  ('Hedge Shaping', 'hedge', 'Spring', 'Early-season hedge shaping and clean growth lines.', 32.5, 'job', true),
+  ('Lawn Care', 'lawn', 'Summer', 'Regular mowing, edge trimming, optional grass collection, and tidy finishing.', 34.375, 'visit', true),
+  ('Lawn Restart', 'lawn', 'Spring', 'First mow, edge trim, and light clean-up after winter.', 37.5, 'visit', true),
+  ('Scarifying / Aeration', 'lawn', 'Spring', 'Seasonal lawn recovery placeholder for deeper spring maintenance.', 56.25, 'job', true),
+  ('Hedge Care', 'hedge', 'Summer', 'Hedge trimming, shape correction, and clean finishing.', 40.625, 'job', true),
+  ('Hedge Pre-Winter Trim', 'hedge', 'Autumn', 'Final hedge shaping before winter growth slows down.', 40.625, 'job', true),
+  ('Hedge Shaping', 'hedge', 'Spring', 'Early-season hedge shaping and clean growth lines.', 40.625, 'job', true),
   ('Weeding & Garden Tidy', 'hourly', 'Summer', 'Hourly hand work for beds, borders, paths, and small garden clean-ups.', 27.5, 'hour', true),
   ('Garden Maintenance', 'hourly', 'All year', 'Weeding, planting, tidy-up, and minor outdoor help.', 27.5, 'hour', true),
   ('Garden Winter Prep', 'hourly', 'Autumn', 'General hourly maintenance for beds, leaves, pots, and outdoor areas before winter.', 27.5, 'hour', true),

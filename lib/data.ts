@@ -79,8 +79,8 @@ export const serviceSections = [
     title: "Summer Services",
     intro: "Keep the garden easy to enjoy during the fastest growing months.",
     items: [
-      ["Lawn Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.125/m² base, minimum €25 per visit", Sprout],
-      ["Hedge Care", "Hedge trimming, shape correction, and height/density adjustments.", "€5/linear metre base", TreePine],
+      ["Lawn Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.156/m² base, minimum €31 per visit", Sprout],
+      ["Hedge Care", "Hedge trimming, shape correction, and height/density adjustments.", "€6.25/linear metre base", TreePine],
       ["Weeding & Garden Tidy", "Hourly hand work for beds, borders, paths, and small clean-ups.", "€22.50/hour", Sparkles],
       ["Watering Support", "Short visits while clients are away in warmer periods.", "€12.50-22.50/visit", Droplets],
       ["Green Waste Removal", "Add-on collection for clippings, leaves, and trimmings.", "€7.50-30 depending on quantity", Leaf]
@@ -92,7 +92,7 @@ export const serviceSections = [
     items: [
       ["Leaf Clearing", "Raking, blowing, collection, bagging, or compost pile support.", "€0.11/m² base, minimum €22.50", Leaf],
       ["Pressure Washing", "Terraces, paths, patios, and driveways before winter grime sets in.", "€6/m² base, minimum €42.50", Waves],
-      ["Hedge Pre-Winter Trim", "Neat final shaping before growth slows down.", "€5-7.50/linear metre", TreePine],
+      ["Hedge Pre-Winter Trim", "Neat final shaping before growth slows down.", "€6.25-9.40/linear metre", TreePine],
       ["Garden Winter Prep", "General hourly maintenance for beds, leaves, pots, and outdoor areas.", "€22.50/hour", CalendarDays]
     ]
   },
@@ -110,11 +110,11 @@ export const serviceSections = [
     title: "Spring Services",
     intro: "Reset the garden after winter and get it looking sharp early.",
     items: [
-      ["Lawn Restart", "First mow, edge trim, and light clean-up after winter.", "€0.15/m² base, minimum €30", Flower2],
+      ["Lawn Restart", "First mow, edge trim, and light clean-up after winter.", "€0.188/m² base, minimum €37.50", Flower2],
       ["Pressure Washing", "Refresh terraces, paths, stone, and outdoor surfaces.", "€6/m²", Waves],
       ["Scarifying / Aeration", "Placeholder service for deeper lawn recovery.", "€0.40/m² base, minimum €45", Sprout],
       ["Planting / Refresh", "Hourly planting help and seasonal garden refreshes.", "€22.50/hour", Flower2],
-      ["Hedge Shaping", "Early-season structure and clean growth lines.", "€5/linear metre", TreePine]
+      ["Hedge Shaping", "Early-season structure and clean growth lines.", "€6.25/linear metre", TreePine]
     ]
   }
 ];
@@ -213,8 +213,8 @@ export const imageAlt = {
 };
 
 export const quickStats = [
-  ["Typical lawn visit", "from €27.50"],
-  ["Hedge trimming", "from €32.50"],
+  ["Typical lawn visit", "from €34"],
+  ["Hedge trimming", "from €41"],
   ["Pressure washing", "from €42.50"],
   ["Winter salting", "from €19/visit"]
 ];

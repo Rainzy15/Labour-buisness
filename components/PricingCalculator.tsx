@@ -30,8 +30,8 @@ type WinterState = Parameters<typeof calculateWinter>[0];
 type HourlyState = Parameters<typeof calculateHourly>[0];
 
 const tabs: Array<{ id: Tab; label: string; price: string; icon: React.ComponentType<{ className?: string }> }> = [
-  { id: "lawn", label: "Lawn", price: "from €27.50", icon: Sprout },
-  { id: "hedges", label: "Hedges", price: "from €32.50", icon: Scissors },
+  { id: "lawn", label: "Lawn", price: "from €34", icon: Sprout },
+  { id: "hedges", label: "Hedges", price: "from €41", icon: Scissors },
   { id: "leaves", label: "Leaves", price: "from €25", icon: Leaf },
   { id: "pressure", label: "Pressure", price: "from €42.50", icon: Waves },
   { id: "winter", label: "Winter", price: "from €69.50/mo", icon: Snowflake },

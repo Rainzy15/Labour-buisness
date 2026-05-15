@@ -1,12 +1,12 @@
 export const PRICING = {
   lawn: {
-    basePerSqm: 0.125,
-    springFirstCutPerSqm: 0.15,
-    premiumCarePerSqm: 0.175,
-    minimumVisit: 27.5,
-    smallGardenMinimum: 25,
-    edgeTrimming: 7.5,
-    grassCollectionPerSqm: 0.03,
+    basePerSqm: 0.15625,
+    springFirstCutPerSqm: 0.1875,
+    premiumCarePerSqm: 0.21875,
+    minimumVisit: 34.375,
+    smallGardenMinimum: 31.25,
+    edgeTrimming: 9.375,
+    grassCollectionPerSqm: 0.0375,
     greenWasteRemovalSmall: 10,
     greenWasteRemovalLarge: 17.5,
     longGrassMultiplier: 1.15,
@@ -21,10 +21,10 @@ export const PRICING = {
     discounts: { weekly: 0.15, biweekly: 0.1, monthly: 0.05 }
   },
   hedge: {
-    basePerLinearMeter: 5,
-    minimumJob: 32.5,
-    wasteRemoval: 15,
-    accessSurcharge: 7.5,
+    basePerLinearMeter: 6.25,
+    minimumJob: 40.625,
+    wasteRemoval: 18.75,
+    accessSurcharge: 9.375,
     heightMultipliers: { under150cm: 0.85, from150to250cm: 1.0, over250cm: 1.4 },
     densityMultipliers: { light: 0.9, normal: 1.0, dense: 1.25 },
     shapingMultipliers: { basic: 1.0, clean: 1.1, premium: 1.25 }

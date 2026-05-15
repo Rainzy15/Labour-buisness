@@ -134,7 +134,7 @@ function answerFor(input: string, fallback: string) {
   const text = input.toLowerCase();
 
   if (text.includes("300") || text.includes("lawn") || text.includes("mow")) {
-    return "For a normal 300m² lawn, a typical visit is usually around €37.50 before add-ons. Edge trimming, collection, terrain, access, and frequency discounts can change it. Use the Lawn tab for the cleanest estimate.";
+    return "For a normal 300m² lawn, a typical visit is usually around €47 before add-ons. Edge trimming, collection, terrain, access, and frequency discounts can change it. Use the Lawn tab for the cleanest estimate.";
   }
 
   if (text.includes("bundle") || text.includes("choose")) {

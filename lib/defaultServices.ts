@@ -4,7 +4,7 @@ export const DEFAULT_SERVICES = [
     category: "lawn",
     season: "Summer",
     description: "Regular mowing, edge trimming, optional grass collection, and tidy finishing.",
-    base_price: 27.5,
+    base_price: 34.375,
     pricing_unit: "visit"
   },
   {
@@ -12,7 +12,7 @@ export const DEFAULT_SERVICES = [
     category: "lawn",
     season: "Spring",
     description: "First mow, edge trim, and light clean-up after winter.",
-    base_price: 30,
+    base_price: 37.5,
     pricing_unit: "visit"
   },
   {
@@ -20,7 +20,7 @@ export const DEFAULT_SERVICES = [
     category: "lawn",
     season: "Spring",
     description: "Seasonal lawn recovery placeholder for deeper spring maintenance.",
-    base_price: 45,
+    base_price: 56.25,
     pricing_unit: "job"
   },
   {
@@ -28,7 +28,7 @@ export const DEFAULT_SERVICES = [
     category: "hedge",
     season: "Summer",
     description: "Hedge trimming, shape correction, and clean finishing.",
-    base_price: 32.5,
+    base_price: 40.625,
     pricing_unit: "job"
   },
   {
@@ -36,7 +36,7 @@ export const DEFAULT_SERVICES = [
     category: "hedge",
     season: "Autumn",
     description: "Final hedge shaping before winter growth slows down.",
-    base_price: 32.5,
+    base_price: 40.625,
     pricing_unit: "job"
   },
   {
@@ -44,7 +44,7 @@ export const DEFAULT_SERVICES = [
     category: "hedge",
     season: "Spring",
     description: "Early-season hedge shaping and clean growth lines.",
-    base_price: 32.5,
+    base_price: 40.625,
     pricing_unit: "job"
   },
   {
