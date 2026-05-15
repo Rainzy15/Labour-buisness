@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import { BriefcaseBusiness, CalendarDays, ChevronDown, LayoutDashboard, LogOut, Settings, ShieldCheck, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -70,38 +69,30 @@ export function UserMenu({ compact = false, onNavigate }: UserMenuProps) {
         {t("account.account")}
         <ChevronDown className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`} />
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.18 }}
-            className="absolute right-0 top-12 z-50 w-64 overflow-hidden rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium"
-          >
-            <div className="border-b border-forest/10 px-3 py-3">
-              <p className="text-xs font-bold text-charcoal/55">{t("account.signedInAs")}</p>
-              <p className="truncate text-sm font-black text-forest">{user.email}</p>
-            </div>
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest"
-                >
-                  <Icon className="h-4 w-4 text-fresh" /> {item.label}
-                </Link>
-              );
-            })}
-            <button onClick={logout} className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
-              <LogOut className="h-4 w-4 text-fresh" /> {t("account.logout")}
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <div className="absolute right-0 top-12 z-50 w-64 overflow-hidden rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium">
+          <div className="border-b border-forest/10 px-3 py-3">
+            <p className="text-xs font-bold text-charcoal/55">{t("account.signedInAs")}</p>
+            <p className="truncate text-sm font-black text-forest">{user.email}</p>
+          </div>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest"
+              >
+                <Icon className="h-4 w-4 text-fresh" /> {item.label}
+              </Link>
+            );
+          })}
+          <button onClick={logout} className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
+            <LogOut className="h-4 w-4 text-fresh" /> {t("account.logout")}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

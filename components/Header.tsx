@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, Sprout, X } from "lucide-react";
 import { useState } from "react";
 import { UserMenu } from "@/components/auth/UserMenu";
@@ -55,23 +54,15 @@ export function Header() {
                 <Link href={item.href} className={navClass(pathname === item.href)}>
                   {t(item.labelKey)} <ChevronDown className="h-3.5 w-3.5" />
                 </Link>
-                <AnimatePresence>
-                  {servicesOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.18 }}
-                      className="absolute left-0 top-11 w-64 rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium"
-                    >
-                      {serviceLinks.map((link) => (
-                        <Link key={`${link.href}-${link.labelKey}`} href={link.href} className="block rounded-2xl px-4 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
-                          {t(link.labelKey)}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {servicesOpen && (
+                  <div className="absolute left-0 top-11 w-64 rounded-[24px] border border-forest/10 bg-white p-2 shadow-premium">
+                    {serviceLinks.map((link) => (
+                      <Link key={`${link.href}-${link.labelKey}`} href={link.href} className="block rounded-2xl px-4 py-3 text-sm font-bold text-charcoal transition hover:bg-cream hover:text-forest">
+                        {t(link.labelKey)}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
               <Link key={item.href} href={item.href} className={navClass(pathname === item.href)}>
@@ -110,31 +101,29 @@ export function Header() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.18 }} className="fixed inset-x-0 top-[76px] max-h-[calc(100dvh-76px)] overflow-y-auto border-t border-forest/10 bg-[#FAF7EF] px-4 py-4 shadow-premium lg:hidden">
-            <div className="mx-auto grid max-w-7xl gap-3">
-              {mobileLinks.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="min-h-12 rounded-2xl bg-white px-4 py-3 text-base font-bold text-forest">
-                  {t(item.labelKey)}
-                </Link>
-              ))}
-              <div className="rounded-2xl bg-white p-3">
-                <label className="grid gap-2 text-xs font-black uppercase tracking-[0.16em] text-charcoal/50">
-                  {t("nav.language")}
-                  <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} className="rounded-2xl border border-forest/15 bg-cream px-3 py-3 text-sm font-bold text-forest">
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                    <option value="lb">Lëtzebuergesch</option>
-                  </select>
-                </label>
-              </div>
-              <UserMenu compact onNavigate={() => setOpen(false)} />
+      {open && (
+        <div className="fixed inset-x-0 top-[76px] max-h-[calc(100dvh-76px)] overflow-y-auto border-t border-forest/10 bg-[#FAF7EF] px-4 py-4 shadow-premium lg:hidden">
+          <div className="mx-auto grid max-w-7xl gap-3">
+            {mobileLinks.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="min-h-12 rounded-2xl bg-white px-4 py-3 text-base font-bold text-forest">
+                {t(item.labelKey)}
+              </Link>
+            ))}
+            <div className="rounded-2xl bg-white p-3">
+              <label className="grid gap-2 text-xs font-black uppercase tracking-[0.16em] text-charcoal/50">
+                {t("nav.language")}
+                <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} className="rounded-2xl border border-forest/15 bg-cream px-3 py-3 text-sm font-bold text-forest">
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                  <option value="de">Deutsch</option>
+                  <option value="lb">Lëtzebuergesch</option>
+                </select>
+              </label>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <UserMenu compact onNavigate={() => setOpen(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

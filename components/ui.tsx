@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -36,16 +33,9 @@ export function ButtonLink({ href, children, variant = "primary" }: { href: stri
 
 export function MotionCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.45 }}
-      whileHover={{ y: -4 }}
-      className={`rounded-[28px] border border-forest/10 bg-white p-6 shadow-glass transition ${className}`}
-    >
+    <div className={`rounded-[28px] border border-forest/10 bg-white p-6 shadow-glass transition duration-200 hover:-translate-y-1 ${className}`}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 

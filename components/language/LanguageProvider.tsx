@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
@@ -76,17 +76,42 @@ const attrOriginals = new WeakMap<Element, Record<string, string>>();
 
 function DomTranslator({ language }: { language: Language }) {
   const pathname = usePathname();
+  const previousLanguage = useRef<Language>("en");
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => translateNode(document.body, language));
-    const timeout = window.setTimeout(() => translateNode(document.body, language), 250);
+    const wasTranslated = previousLanguage.current !== "en";
+    previousLanguage.current = language;
+
+    if (language === "en" && !wasTranslated) {
+      return;
+    }
+
+    const run = () => translateNode(document.body, language);
+    const idleId = scheduleIdle(run);
+    const timeout = window.setTimeout(run, 450);
+
     return () => {
-      window.cancelAnimationFrame(frame);
+      cancelIdle(idleId);
       window.clearTimeout(timeout);
     };
   }, [language, pathname]);
 
   return null;
+}
+
+function scheduleIdle(callback: () => void) {
+  if ("requestIdleCallback" in window) {
+    return window.requestIdleCallback(callback, { timeout: 700 });
+  }
+  return globalThis.setTimeout(callback, 120);
+}
+
+function cancelIdle(id: number | ReturnType<typeof setTimeout>) {
+  if ("cancelIdleCallback" in window) {
+    window.cancelIdleCallback(id as number);
+    return;
+  }
+  globalThis.clearTimeout(id);
 }
 
 function translateNode(root: Node, language: Language) {

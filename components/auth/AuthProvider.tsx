@@ -22,6 +22,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(configured);
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!configured) {
       setLoading(false);
       return;
@@ -29,15 +31,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const supabase = createClient();
     async function loadUser() {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user ?? null);
-      if (data.user) {
-        const { data: profile } = await supabase.from("users_profile").select("role").eq("auth_user_id", data.user.id).maybeSingle();
-        setRole((profile?.role as UserRole | undefined) ?? null);
+      const { data } = await supabase.auth.getSession();
+      const sessionUser = data.session?.user ?? null;
+      if (cancelled) return;
+
+      setUser(sessionUser);
+      setLoading(false);
+
+      if (sessionUser) {
+        loadRole(sessionUser.id);
       } else {
         setRole(null);
       }
-      setLoading(false);
+    }
+
+    async function loadRole(userId: string) {
+      const { data: profile } = await supabase.from("users_profile").select("role").eq("auth_user_id", userId).maybeSingle();
+      if (!cancelled) setRole((profile?.role as UserRole | undefined) ?? null);
     }
 
     loadUser();
@@ -46,17 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null);
       if (!session?.user) setRole(null);
       if (session?.user) {
-        supabase
-          .from("users_profile")
-          .select("role")
-          .eq("auth_user_id", session.user.id)
-          .maybeSingle()
-          .then(({ data: profile }) => setRole((profile?.role as UserRole | undefined) ?? null));
+        loadRole(session.user.id);
       }
       setLoading(false);
     });
 
-    return () => data.subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      data.subscription.unsubscribe();
+    };
   }, [configured]);
 
   const value = useMemo(() => ({ user, role, loading, configured }), [user, role, loading, configured]);
