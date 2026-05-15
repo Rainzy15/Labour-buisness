@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireProfile } from "@/lib/auth/server";
 import { getOrCreateCustomer } from "@/lib/dashboardData";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 const addressSchema = z.object({
@@ -30,6 +31,27 @@ const bookingSchema = z.object({
   estimated_price: z.coerce.number().min(0).optional(),
   frequency: z.string().optional(),
   customer_notes: z.string().optional()
+});
+
+const quoteItemSchema = z.object({
+  serviceId: z.string().uuid(),
+  serviceName: z.string().min(1),
+  category: z.string().min(1),
+  quantity: z.coerce.number().min(0),
+  unit: z.string().min(1),
+  unitPrice: z.coerce.number().min(0),
+  subtotal: z.coerce.number().min(0),
+  details: z.record(z.string(), z.any()).optional()
+});
+
+const multiBookingSchema = z.object({
+  address_id: z.string().uuid(),
+  requested_date: z.string().min(1),
+  preferred_time: z.string().optional(),
+  frequency: z.string().optional(),
+  estimated_price: z.coerce.number().min(0),
+  customer_notes: z.string().optional(),
+  quote_items_json: z.string().min(2)
 });
 
 export type ActionState = { ok: boolean; message: string };
@@ -105,6 +127,75 @@ export async function createBookingAction(_state: ActionState, formData: FormDat
   if (error) return { ok: false, message: error.message };
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/bookings");
+  redirect("/dashboard/bookings?created=1");
+}
+
+export async function createMultiServiceBookingAction(_state: ActionState, formData: FormData): Promise<ActionState> {
+  const profile = await requireProfile(["customer", "admin", "manager"]);
+  const customer = await getOrCreateCustomer(profile);
+  if (!customer) return { ok: false, message: "Customer profile is not ready yet." };
+
+  const parsed = multiBookingSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, message: "Please choose an address, preferred date, and at least one service." };
+
+  let quoteItems: z.infer<typeof quoteItemSchema>[];
+  try {
+    const rawItems = JSON.parse(parsed.data.quote_items_json);
+    const parsedItems = z.array(quoteItemSchema).min(1).safeParse(rawItems);
+    if (!parsedItems.success) return { ok: false, message: "Please add at least one valid service to your booking." };
+    quoteItems = parsedItems.data;
+  } catch {
+    return { ok: false, message: "The selected services could not be read. Please add them again." };
+  }
+
+  const requestedDate = parsed.data.preferred_time ? `${parsed.data.requested_date}T${parsed.data.preferred_time}:00` : null;
+  const admin = createAdminClient();
+  const primaryServiceId = quoteItems[0]?.serviceId ?? null;
+  const serviceSummary = quoteItems.map((item) => `${item.serviceName}: €${Math.round(item.subtotal)}`).join("\n");
+  const combinedNotes = [
+    parsed.data.customer_notes?.trim(),
+    "Selected services:",
+    serviceSummary
+  ].filter(Boolean).join("\n\n");
+
+  const { data: booking, error } = await admin
+    .from("bookings")
+    .insert({
+      customer_id: customer.id,
+      service_id: primaryServiceId,
+      address_id: parsed.data.address_id,
+      status: "requested",
+      requested_date: parsed.data.requested_date,
+      scheduled_start: requestedDate,
+      estimated_price: parsed.data.estimated_price,
+      frequency: parsed.data.frequency || "multi-service",
+      customer_notes: combinedNotes || null
+    })
+    .select("id")
+    .single();
+
+  if (error || !booking) return { ok: false, message: error?.message ?? "Could not create booking request." };
+
+  const { error: itemError } = await admin.from("booking_items").insert(
+    quoteItems.map((item) => ({
+      booking_id: booking.id,
+      service_name: item.serviceName,
+      quantity: item.quantity,
+      unit: item.unit,
+      unit_price: item.unitPrice,
+      subtotal: item.subtotal,
+      pricing_details_json: {
+        category: item.category,
+        ...(item.details ?? {})
+      }
+    }))
+  );
+
+  if (itemError) return { ok: false, message: itemError.message };
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/bookings");
+  revalidatePath("/admin/bookings");
   redirect("/dashboard/bookings?created=1");
 }
 
