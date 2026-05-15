@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useFormState } from "react-dom";
-import { CalendarDays, CheckCircle2, Clock, Leaf, Plus, Scissors, Snowflake, Sprout, Trash2, Waves } from "lucide-react";
+import { CalendarDays, CheckCircle2, ChevronDown, Clock, Info, Leaf, Plus, Scissors, Snowflake, Sprout, Trash2, Waves } from "lucide-react";
 import { createMultiServiceBookingAction, type ActionState } from "@/app/dashboard/actions";
 import type { AddressRecord, ServiceRecord } from "@/lib/dashboardData";
 import { PRICING, eur } from "@/lib/pricing";
@@ -31,6 +31,16 @@ type QuoteItem = {
   details: DraftOptions & { description?: string | null };
 };
 
+const seasonOrder = ["Summer", "Autumn", "Winter", "Spring", "All year"] as const;
+
+const seasonIntros: Record<string, string> = {
+  Summer: "Mowing, hedges, watering support, weeding, and tidy garden upkeep.",
+  Autumn: "Leaves, pre-winter hedge work, outdoor surface cleaning, and winter preparation.",
+  Winter: "Snow clearing, salting, emergency access, and safety visits.",
+  Spring: "Lawn restart, pressure washing, hedge shaping, planting, and garden refreshes.",
+  "All year": "Flexible garden help and add-ons that can be booked in any season."
+};
+
 const categoryMeta: Record<BookingServiceCategory, { label: string; unit: string; min: number; max: number; helper: string; icon: React.ComponentType<{ className?: string }> }> = {
   lawn: { label: "Lawn size", unit: "m²", min: 50, max: 1500, helper: "Use the area of the lawn that needs mowing.", icon: Sprout },
   hedge: { label: "Hedge length", unit: "linear m", min: 1, max: 120, helper: "Measure the total visible hedge run.", icon: Scissors },
@@ -54,6 +64,14 @@ export function BookingRequestForm({ addresses, services }: { addresses: Address
     workers: 1
   });
   const [basket, setBasket] = useState<QuoteItem[]>([]);
+  const [openSeasons, setOpenSeasons] = useState<Record<string, boolean>>({
+    Summer: true,
+    Autumn: false,
+    Winter: false,
+    Spring: false,
+    "All year": false
+  });
+  const [infoServiceId, setInfoServiceId] = useState<string | null>(null);
 
   const selectedService = useMemo(
     () => visibleServices.find((service) => service.id === selectedServiceId) ?? visibleServices[0],
@@ -62,6 +80,7 @@ export function BookingRequestForm({ addresses, services }: { addresses: Address
   const category = getCategory(selectedService?.category);
   const meta = categoryMeta[category];
   const estimate = useMemo(() => selectedService ? estimateService(selectedService, category, options) : null, [selectedService, category, options]);
+  const servicesBySeason = useMemo(() => groupServicesBySeason(visibleServices), [visibleServices]);
   const total = basket.reduce((sum, item) => sum + item.subtotal, 0);
   const monthly = basket.reduce((sum, item) => sum + recurringMonthly(item), 0);
 
@@ -122,29 +141,43 @@ export function BookingRequestForm({ addresses, services }: { addresses: Address
               <h2 className="mt-1 text-2xl font-black text-forest">Choose services</h2>
               <p className="mt-1 text-sm leading-6 text-charcoal/65">Pick a service, adjust the details, then add it to your booking. You can combine several services in one request.</p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {visibleServices.map((service) => {
-                const serviceCategory = getCategory(service.category);
-                const Icon = categoryMeta[serviceCategory].icon;
-                const active = service.id === selectedService?.id;
+            <div className="grid gap-3">
+              {seasonOrder.map((season) => {
+                const seasonServices = servicesBySeason[season] ?? [];
+                if (seasonServices.length === 0) return null;
+                const open = openSeasons[season] ?? false;
                 return (
-                  <button
-                    key={service.id}
-                    type="button"
-                    onClick={() => chooseService(service)}
-                    className={`min-h-[150px] rounded-[24px] border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-glass ${
-                      active ? "border-fresh bg-forest text-white shadow-premium" : "border-forest/10 bg-cream/60 text-forest"
-                    }`}
-                  >
-                    <span className={`mb-3 grid h-11 w-11 place-items-center rounded-2xl ${active ? "bg-lime text-forest" : "bg-white text-forest"}`}>
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <span className="block text-base font-black">{service.name}</span>
-                    <span className={`mt-1 line-clamp-2 block text-xs leading-5 ${active ? "text-white/72" : "text-charcoal/60"}`}>{service.description ?? "Seasonal garden care service."}</span>
-                    <span className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-black ${active ? "bg-white/12 text-white" : "bg-white text-forest"}`}>
-                      from {eur(Number(service.base_price ?? estimateMinimum(serviceCategory)))}
-                    </span>
-                  </button>
+                  <div key={season} className="overflow-hidden rounded-[26px] border border-forest/10 bg-cream/60">
+                    <button
+                      type="button"
+                      onClick={() => setOpenSeasons((current) => ({ ...current, [season]: !open }))}
+                      className="flex w-full items-center justify-between gap-4 p-4 text-left"
+                      aria-expanded={open}
+                    >
+                      <span>
+                        <span className="block text-lg font-black text-forest">{season}</span>
+                        <span className="mt-1 block text-xs leading-5 text-charcoal/60">{seasonIntros[season]}</span>
+                      </span>
+                      <span className="flex shrink-0 items-center gap-2">
+                        <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-forest">{seasonServices.length}</span>
+                        <ChevronDown className={`h-5 w-5 text-forest transition ${open ? "rotate-180" : ""}`} />
+                      </span>
+                    </button>
+                    {open && (
+                      <div className="grid gap-3 border-t border-forest/10 bg-white/55 p-3 sm:grid-cols-2 lg:grid-cols-3">
+                        {seasonServices.map((service) => (
+                          <SeasonServiceCard
+                            key={service.id}
+                            service={service}
+                            active={service.id === selectedService?.id}
+                            infoOpen={infoServiceId === service.id}
+                            onSelect={() => chooseService(service)}
+                            onToggleInfo={() => setInfoServiceId((current) => current === service.id ? null : service.id)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -314,6 +347,67 @@ export function BookingRequestForm({ addresses, services }: { addresses: Address
   );
 }
 
+function SeasonServiceCard({
+  service,
+  active,
+  infoOpen,
+  onSelect,
+  onToggleInfo
+}: {
+  service: ServiceRecord;
+  active: boolean;
+  infoOpen: boolean;
+  onSelect: () => void;
+  onToggleInfo: () => void;
+}) {
+  const serviceCategory = getCategory(service.category);
+  const Icon = categoryMeta[serviceCategory].icon;
+  const included = includedForService(service, serviceCategory);
+
+  return (
+    <div className={`rounded-[24px] border p-4 transition hover:-translate-y-0.5 hover:shadow-glass ${active ? "border-fresh bg-forest text-white shadow-premium" : "border-forest/10 bg-white text-forest"}`}>
+      <div className="flex items-start justify-between gap-3">
+        <button type="button" onClick={onSelect} className="min-w-0 flex-1 text-left">
+          <span className={`mb-3 grid h-11 w-11 place-items-center rounded-2xl ${active ? "bg-lime text-forest" : "bg-cream text-forest"}`}>
+            <Icon className="h-5 w-5" />
+          </span>
+          <span className="block text-base font-black">{service.name}</span>
+          <span className={`mt-1 line-clamp-2 block text-xs leading-5 ${active ? "text-white/72" : "text-charcoal/60"}`}>{service.description ?? "Seasonal garden care service."}</span>
+        </button>
+        <button
+          type="button"
+          onClick={onToggleInfo}
+          aria-label={`Show what is included with ${service.name}`}
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${active ? "bg-white/12 text-white" : "bg-cream text-forest"}`}
+        >
+          <Info className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <button type="button" onClick={onSelect} className={`rounded-full px-3 py-1 text-xs font-black ${active ? "bg-lime text-forest" : "bg-forest text-white"}`}>
+          Select
+        </button>
+        <span className={`rounded-full px-3 py-1 text-xs font-black ${active ? "bg-white/12 text-white" : "bg-cream text-forest"}`}>
+          from {eur(Number(service.base_price ?? estimateMinimum(serviceCategory)))}
+        </span>
+      </div>
+      {infoOpen && (
+        <div className={`mt-4 rounded-2xl p-3 ${active ? "bg-white/10" : "bg-cream"}`}>
+          <p className={`text-xs font-black uppercase tracking-[0.14em] ${active ? "text-lime" : "text-fresh"}`}>Included</p>
+          <ul className="mt-2 grid gap-2">
+            {included.map((item) => (
+              <li key={item} className={`flex gap-2 text-xs leading-5 ${active ? "text-white/78" : "text-charcoal/70"}`}>
+                <CheckCircle2 className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${active ? "text-lime" : "text-fresh"}`} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ToggleButton({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
   return (
     <button type="button" onClick={onClick} className={`flex min-h-12 items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-black transition ${active ? "border-fresh bg-fresh/12 text-forest" : "border-forest/10 bg-cream text-charcoal/70"}`}>
@@ -331,6 +425,46 @@ function getCategory(category?: string | null): BookingServiceCategory {
   if (category === "winter") return "winter";
   if (category === "hourly") return "hourly";
   return "general";
+}
+
+function normalizeSeason(season?: string | null): (typeof seasonOrder)[number] {
+  const value = (season ?? "All year").toLowerCase();
+  if (value.includes("summer")) return "Summer";
+  if (value.includes("autumn") || value.includes("fall")) return "Autumn";
+  if (value.includes("winter")) return "Winter";
+  if (value.includes("spring")) return "Spring";
+  return "All year";
+}
+
+function groupServicesBySeason(services: ServiceRecord[]) {
+  return services.reduce<Record<string, ServiceRecord[]>>((groups, service) => {
+    const season = normalizeSeason(service.season);
+    groups[season] = [...(groups[season] ?? []), service];
+    return groups;
+  }, {});
+}
+
+function includedForService(service: ServiceRecord, category: BookingServiceCategory) {
+  const name = service.name.toLowerCase();
+  if (category === "lawn") {
+    return ["Mowing adjusted to lawn size", "Edge detail option", "Grass collection or waste removal can be added", "Final quote confirmed before visit"];
+  }
+  if (category === "hedge") {
+    return ["Hedge trimming and shaping", "Height and density considered", "Clean-up around work area", "Green waste removal option"];
+  }
+  if (category === "leaves") {
+    return ["Leaf blowing or raking", "Collection into agreed area", "Bagging or take-away option", "Autumn plan possible"];
+  }
+  if (category === "pressure") {
+    return ["Surface wash for selected area", "Terrace, path, driveway, or lower facade", "Dirt level considered", "Protective treatment can be discussed"];
+  }
+  if (category === "winter") {
+    return ["Access path or driveway focus", name.includes("salt") ? "De-icing salt service" : "Snow clearing and winter safety support", "Urgency and weather conditions considered", "Standby plan available for recurring needs"];
+  }
+  if (category === "hourly") {
+    return ["General garden labour", "Weeding, planting, tidy-up, or mixed help", "Two-hour minimum", "Materials and waste can be added"];
+  }
+  return ["Flexible garden support", "Scope confirmed before the visit", "Add-ons can be discussed", "Final quote confirmed before work"];
 }
 
 function defaultQuantity(category: BookingServiceCategory) {
