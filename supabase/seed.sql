@@ -1,7 +1,7 @@
 insert into public.services (name, category, season, description, base_price, pricing_unit, active)
 select *
 from (values
-  ('Lawn Care', 'lawn', 'Summer', 'Regular mowing, edge trimming, optional grass collection, and tidy finishing.', 34.375, 'visit', true),
+  ('Grass Care', 'lawn', 'Summer', 'Regular mowing, edge trimming, optional grass collection, and tidy finishing.', 34.375, 'visit', true),
   ('Lawn Restart', 'lawn', 'Spring', 'First mow, edge trim, and light clean-up after winter.', 37.5, 'visit', true),
   ('Scarifying / Aeration', 'lawn', 'Spring', 'Seasonal lawn recovery placeholder for deeper spring maintenance.', 56.25, 'job', true),
   ('Hedge Care', 'hedge', 'Summer', 'Hedge trimming, shape correction, and clean finishing.', 40.625, 'job', true),

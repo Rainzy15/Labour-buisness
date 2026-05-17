@@ -138,7 +138,7 @@ function answerFor(input: string, fallback: string) {
   }
 
   if (text.includes("bundle") || text.includes("choose")) {
-    return "Best bundle depends on the season: Summer Lawn Care is good for regular mowing, Autumn Clean-Up is best for leaves plus hedge/terrace work, Winter Safety is for snow and salting, and Monthly Garden Maintenance is best for ongoing tidy-up.";
+    return "Best bundle depends on the season: Summer Grass Care is good for regular mowing, Autumn Clean-Up is best for leaves plus hedge/terrace work, Winter Safety is for snow and salting, and Monthly Garden Maintenance is best for ongoing tidy-up.";
   }
 
   if (text.includes("cancel") || text.includes("reschedule")) {

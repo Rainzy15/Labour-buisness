@@ -1,6 +1,6 @@
 export const DEFAULT_SERVICES = [
   {
-    name: "Lawn Care",
+    name: "Grass Care",
     category: "lawn",
     season: "Summer",
     description: "Regular mowing, edge trimming, optional grass collection, and tidy finishing.",

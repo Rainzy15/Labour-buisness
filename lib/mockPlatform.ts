@@ -1,5 +1,5 @@
 export const mockBookings = [
-  { id: "BK-1042", customer: "Claire Muller", service: "Lawn care", date: "2026-05-15", time: "09:00", status: "requested", price: "€39", employee: "Unassigned" },
+  { id: "BK-1042", customer: "Claire Muller", service: "Grass care", date: "2026-05-15", time: "09:00", status: "requested", price: "€39", employee: "Unassigned" },
   { id: "BK-1041", customer: "Tom Weber", service: "Hedge care", date: "2026-05-15", time: "13:30", status: "scheduled", price: "€72", employee: "Mia" },
   { id: "BK-1040", customer: "Sofia Ribeiro", service: "Pressure washing", date: "2026-05-16", time: "10:30", status: "confirmed", price: "€105", employee: "Leo" },
   { id: "BK-1039", customer: "Residence Kirchberg", service: "Winter safety", date: "2026-05-17", time: "08:00", status: "quote_sent", price: "€69.50/mo", employee: "Unassigned" }
@@ -18,7 +18,7 @@ export const mockEmployees = [
 ];
 
 export const mockContracts = [
-  { id: "CT-500", customer: "Claire Muller", title: "Summer Lawn Care Bundle", status: "active", value: "€74.50/mo" },
+  { id: "CT-500", customer: "Claire Muller", title: "Summer Grass Care Bundle", status: "active", value: "€74.50/mo" },
   { id: "CT-501", customer: "Residence Kirchberg", title: "Winter Safety Bundle", status: "draft", value: "€124.50/mo" }
 ];
 

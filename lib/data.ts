@@ -46,7 +46,7 @@ export const seasons = [
     icon: Sprout,
     price: "from €25",
     summary: "Regular mowing, hedge care, weeding, watering support, and green waste removal.",
-    services: ["Lawn care", "Hedge care", "Weeding and garden tidy-up", "Watering support", "Green waste removal"]
+    services: ["Grass care", "Hedge care", "Weeding and garden tidy-up", "Watering support", "Green waste removal"]
   },
   {
     name: "Autumn",
@@ -70,7 +70,7 @@ export const seasons = [
     icon: Flower2,
     price: "from €30",
     summary: "Restart the lawn, wash outdoor surfaces, shape hedges, and refresh planting.",
-    services: ["Lawn care restart", "Pressure washing", "Scarifying / aeration", "Hedge shaping", "Planting and garden refresh"]
+    services: ["Grass care restart", "Pressure washing", "Scarifying / aeration", "Hedge shaping", "Planting and garden refresh"]
   }
 ];
 
@@ -79,7 +79,7 @@ export const serviceSections = [
     title: "Summer Services",
     intro: "Keep the garden easy to enjoy during the fastest growing months.",
     items: [
-      ["Lawn Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.156/m² base, minimum €31 per visit", Sprout],
+      ["Grass Care", "Regular mowing, edge trimming, optional grass collection and mulching.", "€0.156/m² base, minimum €31 per visit", Sprout],
       ["Hedge Care", "Hedge trimming, shape correction, and height/density adjustments.", "€6.25/linear metre base", TreePine],
       ["Weeding & Garden Tidy", "Hourly hand work for beds, borders, paths, and small clean-ups.", "€22.50/hour", Sparkles],
       ["Watering Support", "Short visits while clients are away in warmer periods.", "€12.50-22.50/visit", Droplets],
@@ -121,7 +121,7 @@ export const serviceSections = [
 
 export const bundles = [
   {
-    name: "Summer Lawn Care Bundle",
+    name: "Summer Grass Care Bundle",
     bestFor: "Families who want a neat lawn all season.",
     includes: ["Weekly or biweekly mowing", "Edge trimming", "1 hedge tidy session", "Green waste add-on discount"],
     frequency: "Weekly or every 2 weeks",
@@ -131,7 +131,7 @@ export const bundles = [
   {
     name: "Full Garden Summer Bundle",
     bestFor: "Homes that need steady garden care.",
-    includes: ["Lawn care", "Hedge care", "Weeding", "Green waste removal"],
+    includes: ["Grass care", "Hedge care", "Weeding", "Green waste removal"],
     frequency: "Monthly plan",
     price: "from €124.50/month",
     savings: "up to 15%"
@@ -171,7 +171,7 @@ export const bundles = [
 ];
 
 export const equipment = [
-  ["Lawn mower", "Clean, efficient mowing for lawns from small city gardens to larger family properties.", ["Lawn care"], "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=900&q=80"],
+  ["Lawn mower", "Clean, efficient mowing for lawns from small city gardens to larger family properties.", ["Grass care"], "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=900&q=80"],
   ["Strimmer / edge trimmer", "Sharp borders around paths, fences, walls, and beds.", ["Edges", "Finishing"], "https://images.unsplash.com/photo-1599685315640-328014947a3a?auto=format&fit=crop&w=900&q=80"],
   ["Blower and rake", "Fast leaf clearing and tidy final passes.", ["Leaves", "Clean-up"], "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80"],
   ["Hedge trimmer", "Neat seasonal hedge shaping with clean lines.", ["Hedges"], "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=900&q=80"],
@@ -186,7 +186,7 @@ export const faqs = {
     ["Is VAT included?", "Placeholder: VAT wording can be customized depending on your legal setup."],
     ["Is there a minimum visit fee?", "Yes. Minimum fees keep short visits fair once travel, setup, and clean-up time are included."]
   ],
-  "Lawn Care": [
+  "Grass Care": [
     ["How often should I mow?", "Weekly or every two weeks works best during strong growth. Monthly can suit slower periods or lower-maintenance lawns."],
     ["Do you collect grass?", "Yes, grass collection can be added. Mulching may be available when conditions are suitable."],
     ["What if the grass is very long?", "Long or overgrown grass takes more time and may need a surcharge or staged cut."]

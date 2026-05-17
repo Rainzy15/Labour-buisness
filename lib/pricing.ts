@@ -131,7 +131,7 @@ export function calculateLawn(input: {
   const p = PRICING.lawn;
   const rate = input.care === "premium" ? p.premiumCarePerSqm : input.season === "spring" ? p.springFirstCutPerSqm : p.basePerSqm;
   const base = input.size * rate;
-  const lines: BreakdownLine[] = [{ label: `${input.size} m² lawn care`, amount: base, kind: "base" }];
+  const lines: BreakdownLine[] = [{ label: `${input.size} m² grass care`, amount: base, kind: "base" }];
 
   const grassMultiplier = input.grass === "long" ? p.longGrassMultiplier : input.grass === "overgrown" ? p.overgrownMultiplier : input.grass === "wet" ? p.wetGrassMultiplier : 1;
   const terrainMultiplier = input.terrain === "medium" ? p.mediumTerrainMultiplier : input.terrain === "difficult" ? p.difficultTerrainMultiplier : 1;
@@ -155,7 +155,7 @@ export function calculateLawn(input: {
   const visits = visitsForFrequency(input.frequency);
   return {
     id: "lawn",
-    name: "Lawn care",
+    name: "Grass care",
     category: "lawn",
     total: perVisit,
     cadence: input.frequency === "oneTime" ? "per-visit" : "per-visit",
@@ -166,7 +166,7 @@ export function calculateLawn(input: {
     confidence: input.access === "complex" || input.grass === "overgrown" ? "Medium" : "High",
     included: input.care === "premium" ? ["Mowing", "Edge trimming", "Grass collection", "Visual clean-up"] : input.care === "standard" ? ["Mowing", "Edge trimming"] : ["Mowing"],
     mayChange: ["Very steep terrain", "Hidden obstacles", "Waste volume", "Exact parking/access"],
-    recommendation: input.frequency === "oneTime" ? "Biweekly visits usually keep Luxembourg lawns neat with 10% savings." : "Recurring lawn care is the best value for steady summer growth.",
+    recommendation: input.frequency === "oneTime" ? "Biweekly visits usually keep Luxembourg lawns neat with 10% savings." : "Recurring grass care is the best value for steady summer growth.",
     breakdown: lines,
     warnings: input.grass === "overgrown" ? ["Overgrown lawns may need a staged first cut."] : undefined
   } satisfies Estimate;

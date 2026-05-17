@@ -4,7 +4,7 @@ import { useState } from "react";
 import { bundles } from "@/lib/data";
 
 const map: Record<string, string> = {
-  "Lawn always neat": "Summer Lawn Care Bundle",
+  "Grass always neat": "Summer Grass Care Bundle",
   "Winter safety": "Winter Safety Bundle",
   "Autumn leaves": "Autumn Clean-Up Bundle",
   "Full garden care": "Full Garden Summer Bundle",
@@ -12,7 +12,7 @@ const map: Record<string, string> = {
 };
 
 export function BundleQuiz() {
-  const [choice, setChoice] = useState("Lawn always neat");
+  const [choice, setChoice] = useState("Grass always neat");
   const bundle = bundles.find((b) => b.name === map[choice])!;
   return (
     <div className="grid gap-5 rounded-[34px] bg-forest p-6 text-white shadow-premium lg:grid-cols-[.9fr_1.1fr]">

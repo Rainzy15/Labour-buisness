@@ -73,7 +73,7 @@ function Hero() {
 function QuickEstimate() {
   const [size, setSize] = useState(250);
   const [season, setSeason] = useState("Summer");
-  const [service, setService] = useState("Lawn care");
+  const [service, setService] = useState("Grass care");
   const estimate = useMemo(
     () =>
       calculateLawn({
@@ -110,7 +110,7 @@ function QuickEstimate() {
                 {["Spring", "Summer", "Autumn", "Winter"].map((s) => <option key={s}>{s}</option>)}
               </Select>
               <Select value={service} onChange={(e) => setService(e.target.value)} aria-label="Service">
-                {["Lawn care", "Hedge care", "Leaf clearing", "Pressure washing", "Snow clearing", "Garden maintenance"].map((s) => <option key={s}>{s}</option>)}
+                {["Grass care", "Hedge care", "Leaf clearing", "Pressure washing", "Snow clearing", "Garden maintenance"].map((s) => <option key={s}>{s}</option>)}
               </Select>
             </div>
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-forest p-5 text-white">

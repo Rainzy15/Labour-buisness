@@ -12,7 +12,7 @@ export default async function AdminServicesPage() {
           <div>
             <h2 className="text-2xl font-black">Restore LuxLawn default services</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-white/70">
-              Adds back any missing default services used by the booking builder, including lawn care, hedges, leaves, pressure washing, winter work, and hourly garden maintenance. Existing services are kept.
+              Adds back any missing default services used by the booking builder, including grass care, hedges, leaves, pressure washing, winter work, and hourly garden maintenance. Existing services are kept.
             </p>
           </div>
           <form action={restoreDefaultServicesAction}>
